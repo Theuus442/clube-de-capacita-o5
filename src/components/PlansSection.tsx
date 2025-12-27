@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    id: "mensal",
-    name: "Plano Mensal",
-    description: "Pague todo mês. Cancele quando quiser.",
+    id: "semestral",
+    name: "Plano Semestral",
+    description: "6 meses de acesso completo. Cancele quando quiser.",
     price: "49,90",
     period: "/mês",
+    totalPrice: "299,40",
     features: [
       "Acesso a todos os cursos",
       "Certificados ilimitados",
@@ -18,18 +19,19 @@ const plans = [
     icon: <Zap className="w-6 h-6" />,
     popular: false,
     // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_MENSAL"
+    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_SEMESTRAL"
   },
   {
     id: "anual",
     name: "Plano Anual",
-    description: "Economize assinando o plano anual. 12 meses de acesso liberado.",
+    description: "12 meses de acesso liberado. Melhor custo-benefício.",
     price: "39,90",
     period: "/mês",
+    totalPrice: "478,80",
     originalPrice: "49,90",
     savings: "Economize R$ 120/ano",
     features: [
-      "Tudo do plano mensal",
+      "Tudo do plano semestral",
       "2 meses grátis",
       "Suporte prioritário 24/7",
       "Acesso antecipado a novidades",
@@ -61,7 +63,7 @@ const PlansSection = () => {
     
     console.log(`Iniciando assinatura do plano: ${planId}`);
     // Por enquanto, apenas mostra um alerta
-    alert(`Em breve você será redirecionado para o checkout de assinatura do plano ${planId === 'anual' ? 'Anual' : 'Mensal'}.`);
+    alert(`Em breve você será redirecionado para o checkout de assinatura do plano ${planId === 'anual' ? 'Anual' : 'Semestral'}.`);
   };
 
   return (
