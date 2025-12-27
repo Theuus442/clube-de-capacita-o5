@@ -1,5 +1,6 @@
-import { ArrowRight, Crown, Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   const scrollToPlans = () => {
@@ -31,7 +32,6 @@ const Footer = () => {
               onClick={scrollToPlans}
               className="group"
             >
-              <Crown className="w-5 h-5" />
               Entrar para o clube agora
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -44,14 +44,12 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-hero-gradient rounded-xl flex items-center justify-center shadow-lg">
-                <Crown className="w-6 h-6 text-background" />
-              </div>
-              <div>
-                <span className="font-display text-xl font-bold">Threynnare</span>
-                <span className="block text-sm text-background/60">Clube de Capacitação Profissional</span>
-              </div>
+            <div className="mb-6">
+              <img 
+                src={logo} 
+                alt="Clube de Capacitação Profissional" 
+                className="h-16 w-auto brightness-0 invert"
+              />
             </div>
             <p className="text-background/70 mb-6 max-w-md">
               Plataforma digital de capacitação profissional com acesso contínuo a cursos online de qualificação.
