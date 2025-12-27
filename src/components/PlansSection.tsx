@@ -1,4 +1,4 @@
-import { Check, Crown, Zap, Star } from "lucide-react";
+import { Check, Crown, Zap, Star, ShieldCheck, CreditCard, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const plans = [
@@ -172,19 +172,19 @@ const PlansSection = () => {
 
         {/* Trust Badges */}
         <div className="flex flex-wrap items-center justify-center gap-8 mt-16">
-          <TrustBadge icon="🔒" text="Pagamento 100% Seguro" />
-          <TrustBadge icon="⚡" text="Acesso Imediato" />
-          <TrustBadge icon="🎯" text="7 dias de garantia" />
-          <TrustBadge icon="💳" text="Parcele no cartão" />
+          <TrustBadge icon={<ShieldCheck className="w-5 h-5" />} text="Pagamento 100% Seguro" />
+          <TrustBadge icon={<Zap className="w-5 h-5" />} text="Acesso Imediato" />
+          <TrustBadge icon={<Target className="w-5 h-5" />} text="7 dias de garantia" />
+          <TrustBadge icon={<CreditCard className="w-5 h-5" />} text="Parcele no cartão" />
         </div>
       </div>
     </section>
   );
 };
 
-const TrustBadge = ({ icon, text }: { icon: string; text: string }) => (
+const TrustBadge = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
   <div className="flex items-center gap-2 text-muted-foreground">
-    <span className="text-lg">{icon}</span>
+    <span className="text-primary">{icon}</span>
     <span className="text-sm font-medium">{text}</span>
   </div>
 );
