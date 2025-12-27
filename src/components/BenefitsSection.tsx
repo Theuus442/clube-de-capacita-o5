@@ -1,58 +1,58 @@
 import { 
-  Infinity, 
+  FileCheck, 
+  Target, 
   Award, 
-  RefreshCw, 
-  Headphones, 
-  Smartphone, 
-  Users 
+  BookOpen, 
+  Briefcase, 
+  TrendingUp 
 } from "lucide-react";
 
 const benefits = [
   {
-    icon: <Infinity className="w-7 h-7" />,
-    title: "Acesso Ilimitado",
-    description: "Assista quantas vezes quiser, sem restrições. O conteúdo é seu enquanto for assinante.",
+    icon: <FileCheck className="w-7 h-7" />,
+    title: "Quer melhorar seu currículo e se destacar",
+    description: "Certificados reconhecidos que valorizam seu perfil profissional.",
+  },
+  {
+    icon: <Target className="w-7 h-7" />,
+    title: "Busca capacitação prática e objetiva",
+    description: "Conteúdo direto ao ponto e aplicável no dia a dia.",
   },
   {
     icon: <Award className="w-7 h-7" />,
-    title: "Certificados Gratuitos",
-    description: "Emita certificados de conclusão para todos os cursos sem custo adicional.",
+    title: "Precisa de certificados para comprovar qualificação",
+    description: "Emita certificados ao concluir cada curso, sem custo adicional.",
   },
   {
-    icon: <RefreshCw className="w-7 h-7" />,
-    title: "Conteúdo Atualizado",
-    description: "Novos cursos toda semana e atualizações constantes do material existente.",
+    icon: <BookOpen className="w-7 h-7" />,
+    title: "Quer aprender de forma contínua",
+    description: "Acesso ilimitado sem pagar por curso avulso.",
   },
   {
-    icon: <Headphones className="w-7 h-7" />,
-    title: "Suporte Dedicado",
-    description: "Tire dúvidas com nossa equipe especializada sempre que precisar.",
+    icon: <Briefcase className="w-7 h-7" />,
+    title: "Valoriza acesso profissional",
+    description: "Plataforma estruturada, não curso solto.",
   },
   {
-    icon: <Smartphone className="w-7 h-7" />,
-    title: "Acesse de Qualquer Lugar",
-    description: "Estude pelo computador, tablet ou celular. Sua conta sincroniza em todos os dispositivos.",
-  },
-  {
-    icon: <Users className="w-7 h-7" />,
-    title: "Comunidade Exclusiva",
-    description: "Conecte-se com outros profissionais, troque experiências e faça networking.",
+    icon: <TrendingUp className="w-7 h-7" />,
+    title: "Quer investir no próprio crescimento",
+    description: "Evolução contínua com investimento acessível.",
   },
 ];
 
 const BenefitsSection = () => {
   return (
-    <section id="beneficios" className="py-24 lg:py-32">
+    <section id="para-quem" className="py-24 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
-            Benefícios Exclusivos
+            Para quem é o clube
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Tudo isso <span className="text-gradient">incluso</span> na sua assinatura
+            O Clube de Capacitação Profissional é <span className="text-gradient">para você</span> que:
           </h2>
           <p className="text-lg text-muted-foreground">
-            Sem taxas escondidas. Sem surpresas. Apenas resultados para sua carreira.
+            Se você leva sua evolução profissional a sério, esse clube é para você.
           </p>
         </div>
 

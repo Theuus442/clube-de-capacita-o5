@@ -1,4 +1,4 @@
-import { Play, Sparkles, Award, Users } from "lucide-react";
+import { ArrowRight, Sparkles, Monitor, Smartphone, Tablet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
@@ -20,18 +20,18 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-border mb-8 animate-fade-up">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">Plataforma de Capacitação Profissional</span>
+            <span className="text-sm font-medium text-foreground">Plataforma digital de capacitação profissional by Threynnare</span>
           </div>
 
           {/* Headline */}
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 animate-fade-up animation-delay-200">
-            Sua carreira não evolui com apenas um curso.{" "}
-            <span className="text-gradient">Entre para o Clube.</span>
+            Capacitação profissional online para quem quer{" "}
+            <span className="text-gradient">evoluir de verdade.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 animate-fade-up animation-delay-400">
-            Assine a maior plataforma de capacitação profissional. Acesso ilimitado a todas as trilhas e certificados por um valor fixo mensal.
+            Tenha acesso contínuo a cursos de capacitação profissional, estude no seu ritmo e conquiste certificados que fortalecem seu currículo e ampliam suas oportunidades no mercado de trabalho.
           </p>
 
           {/* CTAs */}
@@ -41,24 +41,25 @@ const HeroSection = () => {
               size="xl"
               onClick={scrollToPlans}
             >
-              <Play className="w-5 h-5" />
-              Quero ser assinante
-            </Button>
-            <Button 
-              variant="hero-outline" 
-              size="xl"
-              onClick={() => document.getElementById('trilhas')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Conhecer as trilhas
+              Quero acesso ao clube
+              <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 animate-fade-up animation-delay-600">
-            <StatCard icon={<Users className="w-6 h-6" />} value="12.000+" label="Assinantes ativos" />
-            <StatCard icon={<Play className="w-6 h-6" />} value="500+" label="Aulas disponíveis" />
-            <StatCard icon={<Award className="w-6 h-6" />} value="50+" label="Trilhas completas" />
-            <StatCard icon={<Sparkles className="w-6 h-6" />} value="98%" label="Satisfação" />
+          {/* Devices info */}
+          <div className="flex items-center justify-center gap-6 text-muted-foreground animate-fade-up animation-delay-600">
+            <div className="flex items-center gap-2">
+              <Monitor className="w-5 h-5" />
+              <span className="text-sm">Computador</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Tablet className="w-5 h-5" />
+              <span className="text-sm">Tablet</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-5 h-5" />
+              <span className="text-sm">Celular</span>
+            </div>
           </div>
         </div>
       </div>
@@ -72,15 +73,5 @@ const HeroSection = () => {
     </section>
   );
 };
-
-const StatCard = ({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) => (
-  <div className="glass-card rounded-2xl p-6 hover-lift">
-    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 mx-auto">
-      {icon}
-    </div>
-    <div className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1">{value}</div>
-    <div className="text-sm text-muted-foreground">{label}</div>
-  </div>
-);
 
 export default HeroSection;
