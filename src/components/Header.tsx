@@ -1,5 +1,5 @@
-import { Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const scrollToPlans = () => {
@@ -11,14 +11,12 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-hero-gradient rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-glow transition-shadow duration-300">
-              <Crown className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-display text-lg font-bold text-foreground">Clube de Capacitação Profissional</span>
-              <span className="block text-xs text-muted-foreground -mt-0.5">by Threynnare</span>
-            </div>
+          <a href="/" className="flex items-center">
+            <img 
+              src={logo} 
+              alt="Clube de Capacitação Profissional" 
+              className="h-12 lg:h-14 w-auto"
+            />
           </a>
 
           {/* Navigation */}
