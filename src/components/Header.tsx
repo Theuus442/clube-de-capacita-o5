@@ -1,4 +1,4 @@
-import { Crown, ChevronDown } from "lucide-react";
+import { Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -16,18 +16,18 @@ const Header = () => {
               <Crown className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="hidden sm:block">
-              <span className="font-display text-lg font-bold text-foreground">Threynnare</span>
-              <span className="block text-xs text-muted-foreground -mt-0.5">Clube de Capacitação</span>
+              <span className="font-display text-lg font-bold text-foreground">Clube de Capacitação Profissional</span>
+              <span className="block text-xs text-muted-foreground -mt-0.5">by Threynnare</span>
             </div>
           </a>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#beneficios" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Benefícios
+            <a href="#para-quem" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Para quem é
             </a>
-            <a href="#comparativo" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Por que Assinar
+            <a href="#o-que-e" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              O que é
             </a>
             <a href="#trilhas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Trilhas
@@ -51,7 +51,7 @@ const Header = () => {
               size="sm"
               onClick={scrollToPlans}
             >
-              Quero ser assinante
+              Quero acesso ao clube
             </Button>
           </div>
         </div>

@@ -8,15 +8,22 @@ const Footer = () => {
 
   return (
     <footer className="bg-foreground text-background">
-      {/* CTA Section */}
+      {/* Authority & CTA Section */}
       <div className="border-b border-background/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-3xl mx-auto text-center">
+            <p className="text-background/70 mb-4">
+              O Clube de Capacitação Profissional é um produto digital desenvolvido por uma empresa com experiência em capacitação e qualificação profissional.
+            </p>
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <span className="text-sm text-background/60">by</span>
+              <span className="font-display text-lg font-bold">Threynnare</span>
+            </div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
-              Pronto para transformar sua carreira?
+              Invista na sua evolução profissional hoje.
             </h2>
             <p className="text-background/70 text-lg mb-8">
-              Junte-se a mais de 12.000 profissionais que já estão evoluindo com o Clube.
+              Aprenda mais, se qualifique e esteja preparado para novas oportunidades.
             </p>
             <Button 
               variant="hero" 
@@ -25,7 +32,7 @@ const Footer = () => {
               className="group"
             >
               <Crown className="w-5 h-5" />
-              Quero ser assinante
+              Entrar para o clube agora
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -47,7 +54,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-background/70 mb-6 max-w-md">
-              A maior plataforma de capacitação profissional do Brasil. Acesso ilimitado a todos os cursos por um valor fixo mensal.
+              Plataforma digital de capacitação profissional com acesso contínuo a cursos online de qualificação.
             </p>
             <div className="flex gap-4">
               <SocialLink icon={<Instagram className="w-5 h-5" />} href="#" />
@@ -60,7 +67,8 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Navegação</h4>
             <ul className="space-y-3">
-              <FooterLink href="#beneficios">Benefícios</FooterLink>
+              <FooterLink href="#para-quem">Para quem é</FooterLink>
+              <FooterLink href="#o-que-e">O que é o clube</FooterLink>
               <FooterLink href="#trilhas">Trilhas</FooterLink>
               <FooterLink href="#planos">Planos</FooterLink>
               <FooterLink href="#">Entrar</FooterLink>
@@ -87,14 +95,19 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-background/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-background/60">
-            © {new Date().getFullYear()} Threynnare. Todos os direitos reservados.
+        {/* Disclaimer */}
+        <div className="border-t border-background/10 mt-12 pt-8">
+          <p className="text-sm text-background/50 text-center mb-6">
+            Os cursos do Clube de Capacitação Profissional são voltados para capacitação profissional online e não substituem treinamentos técnicos ou obrigatórios exigidos por lei.
           </p>
-          <div className="flex gap-6 text-sm text-background/60">
-            <a href="#" className="hover:text-background transition-colors">Termos de Uso</a>
-            <a href="#" className="hover:text-background transition-colors">Política de Privacidade</a>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-background/60">
+              © {new Date().getFullYear()} Threynnare. Todos os direitos reservados.
+            </p>
+            <div className="flex gap-6 text-sm text-background/60">
+              <a href="#" className="hover:text-background transition-colors">Termos de Uso</a>
+              <a href="#" className="hover:text-background transition-colors">Política de Privacidade</a>
+            </div>
           </div>
         </div>
       </div>

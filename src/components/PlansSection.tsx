@@ -3,45 +3,38 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    id: "semestral",
-    name: "Plano Semestral",
-    description: "6 meses de acesso completo. Cancele quando quiser.",
-    price: "49,90",
-    period: "/mês",
-    totalPrice: "299,40",
-    features: [
-      "Acesso a todos os cursos",
-      "Certificados ilimitados",
-      "Novos cursos toda semana",
-      "Suporte por email",
-      "Comunidade exclusiva",
-    ],
-    icon: <Zap className="w-6 h-6" />,
-    popular: false,
-    // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_SEMESTRAL"
-  },
-  {
     id: "anual",
     name: "Plano Anual",
-    description: "12 meses de acesso liberado. Melhor custo-benefício.",
-    price: "39,90",
-    period: "/mês",
-    totalPrice: "478,80",
-    originalPrice: "49,90",
-    savings: "Economize R$ 120/ano",
+    highlight: "Mais vantajoso",
+    description: "12 meses de acesso ilimitado à plataforma",
+    price: "397",
+    period: "",
     features: [
-      "Tudo do plano semestral",
-      "2 meses grátis",
-      "Suporte prioritário 24/7",
-      "Acesso antecipado a novidades",
-      "Mentoria mensal em grupo",
-      "Material complementar exclusivo",
+      "Todos os cursos disponíveis",
+      "Certificados inclusos",
+      "Melhor custo-benefício",
+      "Ideal para quem pensa no médio e longo prazo",
     ],
     icon: <Crown className="w-6 h-6" />,
     popular: true,
     // TODO: Substituir pelo link de assinatura do Mercado Pago
     // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_ANUAL"
+  },
+  {
+    id: "semestral",
+    name: "Plano Semestral",
+    description: "Acesso completo à plataforma por 6 meses",
+    price: "297",
+    period: "",
+    features: [
+      "Todos os cursos disponíveis",
+      "Certificados inclusos",
+      "Acesso por 6 meses",
+    ],
+    icon: <Zap className="w-6 h-6" />,
+    popular: false,
+    // TODO: Substituir pelo link de assinatura do Mercado Pago
+    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_SEMESTRAL"
   },
 ];
 
@@ -49,20 +42,7 @@ const PlansSection = () => {
   // Função para redirecionar para o checkout de assinatura
   const handleSubscribe = (planId: string) => {
     // TODO: Integrar com Mercado Pago Preapproval (Assinatura Recorrente)
-    // Exemplo de estrutura para criar a preferência de assinatura:
-    /*
-    const subscription = {
-      preapproval_plan_id: planId === 'anual' ? 'PLAN_ID_ANUAL' : 'PLAN_ID_MENSAL',
-      back_url: window.location.origin + '/criar-conta', // Redireciona para criação de conta após pagamento
-      payer_email: 'email@do.usuario',
-    };
-    
-    // Chamar API do Mercado Pago para criar preapproval e obter link
-    // window.location.href = response.init_point;
-    */
-    
     console.log(`Iniciando assinatura do plano: ${planId}`);
-    // Por enquanto, apenas mostra um alerta
     alert(`Em breve você será redirecionado para o checkout de assinatura do plano ${planId === 'anual' ? 'Anual' : 'Semestral'}.`);
   };
 
@@ -76,14 +56,11 @@ const PlansSection = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
             <Star className="w-4 h-4" />
-            Escolha seu plano
+            Planos de acesso
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Invista no seu <span className="text-gradient">futuro profissional</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Assine agora e tenha acesso imediato a todo o conteúdo. Sua assinatura começa hoje.
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -97,11 +74,11 @@ const PlansSection = () => {
               }`}
             >
               {/* Popular Badge */}
-              {plan.popular && (
+              {plan.popular && plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-hero-gradient text-primary-foreground text-sm font-semibold shadow-lg">
                     <Crown className="w-4 h-4" />
-                    Mais Popular
+                    {plan.highlight}
                   </span>
                 </div>
               )}
@@ -121,23 +98,12 @@ const PlansSection = () => {
 
               {/* Pricing */}
               <div className="mb-8">
-                {plan.originalPrice && (
-                  <div className="text-sm text-muted-foreground line-through mb-1">
-                    R$ {plan.originalPrice}/mês
-                  </div>
-                )}
                 <div className="flex items-baseline gap-1">
                   <span className="text-sm text-muted-foreground">R$</span>
                   <span className={`font-display text-5xl font-bold ${plan.popular ? 'text-gradient' : 'text-foreground'}`}>
                     {plan.price}
                   </span>
-                  <span className="text-muted-foreground">{plan.period}</span>
                 </div>
-                {plan.savings && (
-                  <div className="inline-block mt-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
-                    {plan.savings}
-                  </div>
-                )}
               </div>
 
               {/* Features */}
@@ -161,13 +127,8 @@ const PlansSection = () => {
                 className="w-full"
                 onClick={() => handleSubscribe(plan.id)}
               >
-                {plan.popular ? "Começar minha assinatura" : "Assinar Agora"}
+                {plan.popular ? "Assinar agora" : "Começar agora"}
               </Button>
-
-              {/* Trust Signal */}
-              <p className="text-xs text-center text-muted-foreground mt-4">
-                Cancele quando quiser • Sem taxa de cancelamento
-              </p>
             </div>
           ))}
         </div>
