@@ -195,9 +195,19 @@ const MercadoPagoCheckout = ({
             </button>
           </div>
 
-          <div className="mb-8">
-            <Wallet preferenceId={checkout.preferenceId} />
-          </div>
+          <Button
+            size="lg"
+            className="w-full mb-4"
+            onClick={() => {
+              // Redirecionar para o checkout do Mercado Pago
+              const checkoutUrl = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${checkout.preferenceId}`;
+              window.location.href = checkoutUrl;
+            }}
+          >
+            <span className="flex items-center gap-2">
+              Pagar com Mercado Pago
+            </span>
+          </Button>
 
           <button
             onClick={handleReset}
