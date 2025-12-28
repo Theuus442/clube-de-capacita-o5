@@ -1,10 +1,10 @@
-import { 
+import {
   Rocket,
   Briefcase,
   Sparkles,
   Monitor,
   GraduationCap,
-  Wrench,
+  Share2,
   ChevronRight,
   ArrowRight
 } from "lucide-react";
