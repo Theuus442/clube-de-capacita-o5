@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
-import { Button } from '@/components/ui/button';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
