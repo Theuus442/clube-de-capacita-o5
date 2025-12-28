@@ -99,6 +99,11 @@ const MercadoPagoCheckout = ({
 
     try {
       const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      if (!anonKey) {
+        throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
+      }
+
       const response = await fetch(supabaseFunctionUrl, {
         method: 'POST',
         headers: {
@@ -111,16 +116,29 @@ const MercadoPagoCheckout = ({
       });
 
       if (!response.ok) {
+        let errorDetails = '';
+        try {
+          const errorData = await response.json();
+          errorDetails = errorData.error || JSON.stringify(errorData);
+        } catch {
+          errorDetails = await response.text();
+        }
+        console.error('Erro da função Supabase:', {
+          status: response.status,
+          statusText: response.statusText,
+          details: errorDetails,
+        });
         throw new Error(
-          `Erro da função: ${response.status}. Verifique se a URL está correta e a função está deployada.`
+          `Erro da função: ${response.status} ${response.statusText}. Detalhes: ${errorDetails}`
         );
       }
 
       const data = await response.json();
+      console.log('Resposta da função:', data);
 
       if (!data.preferenceId) {
         throw new Error(
-          'Preferência ID não recebida. Verifique a resposta da função Supabase.'
+          `Preferência ID não recebida. Resposta: ${JSON.stringify(data)}`
         );
       }
 
@@ -130,8 +148,18 @@ const MercadoPagoCheckout = ({
         loading: false,
       }));
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Erro ao processar pagamento';
+      let errorMessage = 'Erro ao processar pagamento';
+
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      } else if (err && typeof err === 'object') {
+        errorMessage = JSON.stringify(err);
+      }
+
+      console.error('Erro no checkout:', err);
+
       setCheckout({
         selectedPlanId: null,
         preferenceId: null,
