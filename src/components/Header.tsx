@@ -12,10 +12,10 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img 
-              src={logo} 
-              alt="Clube de Capacitação Profissional" 
-              className="h-12 lg:h-14 w-auto"
+            <img
+              src={logo}
+              alt="Clube de Capacitação Profissional"
+              className="h-16 lg:h-20 w-auto"
             />
           </a>
 
