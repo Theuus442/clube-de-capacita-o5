@@ -17,11 +17,6 @@ const Header = () => {
               src={logo}
               alt="Clube de Capacitação Profissional"
               className="h-16 lg:h-20 w-auto"
-              style={{
-                backgroundColor: '#FFFFFF',
-                padding: '8px',
-                borderRadius: '8px'
-              }}
             />
           </a>
 
