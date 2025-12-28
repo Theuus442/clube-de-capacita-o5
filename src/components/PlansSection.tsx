@@ -1,4 +1,5 @@
-import { Check, Crown, Zap, Star, ShieldCheck, CreditCard, Target } from "lucide-react";
+import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const plans = [
@@ -17,8 +18,6 @@ const plans = [
     ],
     icon: <Crown className="w-6 h-6" />,
     popular: true,
-    // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_ANUAL"
   },
   {
     id: "semestral",
@@ -33,17 +32,15 @@ const plans = [
     ],
     icon: <Zap className="w-6 h-6" />,
     popular: false,
-    // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_SEMESTRAL"
   },
 ];
 
 const PlansSection = () => {
+  const navigate = useNavigate();
+
   // Função para redirecionar para o checkout de assinatura
   const handleSubscribe = (planId: string) => {
-    // TODO: Integrar com Mercado Pago Preapproval (Assinatura Recorrente)
-    console.log(`Iniciando assinatura do plano: ${planId}`);
-    alert(`Em breve você será redirecionado para o checkout de assinatura do plano ${planId === 'anual' ? 'Anual' : 'Semestral'}.`);
+    navigate('/checkout');
   };
 
   return (
@@ -77,7 +74,7 @@ const PlansSection = () => {
               {plan.popular && plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-hero-gradient text-primary-foreground text-sm font-semibold shadow-lg">
-                    <Crown className="w-4 h-4" />
+                    👑
                     {plan.highlight}
                   </span>
                 </div>
