@@ -1,4 +1,4 @@
-import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown } from "lucide-react";
+import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -74,7 +74,7 @@ const PlansSection = () => {
               {plan.popular && plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-hero-gradient text-primary-foreground text-sm font-semibold shadow-lg">
-                    👑
+                    <Trophy className="w-4 h-4" />
                     {plan.highlight}
                   </span>
                 </div>
