@@ -1,13 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Button } from '@/components/ui/button';
 import { Check, Loader, Crown, Zap, X, Lock, Target } from 'lucide-react';
-
-// Initialize Mercado Pago with public key
-const PUBLIC_KEY = 'TEST-f7e8a080-93c5-4ed9-a60a-01d8a90c014b';
-initMercadoPago(PUBLIC_KEY);
 
 interface Plan {
   id: string;
