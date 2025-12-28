@@ -1,43 +1,7 @@
-import { Check, Crown, Zap, Star, ShieldCheck, CreditCard, Target } from "lucide-react";
+import { Check, Star, ShieldCheck, CreditCard, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
-const plans = [
-  {
-    id: "anual",
-    name: "Plano Anual",
-    highlight: "Mais vantajoso",
-    description: "12 meses de acesso ilimitado à plataforma",
-    price: "397",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Melhor custo-benefício",
-      "Ideal para quem pensa no médio e longo prazo",
-    ],
-    icon: <Crown className="w-6 h-6" />,
-    popular: true,
-    // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_ANUAL"
-  },
-  {
-    id: "semestral",
-    name: "Plano Semestral",
-    description: "Acesso completo à plataforma por 6 meses",
-    price: "297",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Acesso por 6 meses",
-    ],
-    icon: <Zap className="w-6 h-6" />,
-    popular: false,
-    // TODO: Substituir pelo link de assinatura do Mercado Pago
-    // checkoutUrl: "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLAN_ID_SEMESTRAL"
-  },
-];
+import { plans } from "@/config/plans";
 
 const PlansSection = () => {
   const navigate = useNavigate();
