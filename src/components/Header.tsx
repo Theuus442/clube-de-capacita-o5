@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-const logo = "https://cdn.builder.io/api/v1/image/assets%2Fe5bb440d62b9444d8b1b5ce7174c9669%2F2bc8e534755e438d928251cc4499c44d?format=webp&width=800";
+const logo = "https://cdn.builder.io/api/v1/image/assets%2Fe5bb440d62b9444d8b1b5ce7174c9669%2Fee393151f3d54614831850d1a16b29db?format=webp&width=800";
 
 const Header = () => {
   const scrollToPlans = () => {
