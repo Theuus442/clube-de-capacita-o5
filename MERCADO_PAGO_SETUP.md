@@ -29,15 +29,11 @@ Esta é uma chave de **teste**. Para produção, você precisará:
 
 ## 📡 Função Supabase Necessária
 
-Você precisa criar uma função Supabase Edge que crie uma preferência de pagamento no Mercado Pago. Aqui está um exemplo completo:
+✅ **A função já foi criada para você!** Veja `supabase/functions/create-preference/index.ts`
 
-### Passo 1: A Função Já Foi Criada!
+### Configuração Necessária:
 
-✅ Já criei o arquivo `supabase/functions/create-preference/index.ts` para você!
-
-### Passo 2: Configure o Acesso do Mercado Pago
-
-A função já está implementada com:
+A função já está pronta, mas você precisa:
 
 interface RequestBody {
   planType: "mensal" | "anual";
