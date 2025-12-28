@@ -74,6 +74,22 @@ const MercadoPagoCheckout = ({
   });
 
   const handlePlanSelect = async (planId: string) => {
+    // Validate that the Supabase function URL is configured
+    if (
+      !supabaseFunctionUrl ||
+      supabaseFunctionUrl === 'URL_DA_FUNCAO_SUPABASE' ||
+      supabaseFunctionUrl.includes('your-project')
+    ) {
+      setCheckout({
+        selectedPlanId: null,
+        preferenceId: null,
+        loading: false,
+        error:
+          '⚙️ Função Supabase não configurada. Atualize a URL em src/pages/Checkout.tsx com sua função real. Veja MERCADO_PAGO_SETUP.md para mais informações.',
+      });
+      return;
+    }
+
     setCheckout({
       selectedPlanId: planId,
       preferenceId: null,
@@ -93,13 +109,17 @@ const MercadoPagoCheckout = ({
       });
 
       if (!response.ok) {
-        throw new Error('Falha ao criar preferência de pagamento');
+        throw new Error(
+          `Erro da função: ${response.status}. Verifique se a URL está correta e a função está deployada.`
+        );
       }
 
       const data = await response.json();
 
       if (!data.preferenceId) {
-        throw new Error('Preferência ID não recebida');
+        throw new Error(
+          'Preferência ID não recebida. Verifique a resposta da função Supabase.'
+        );
       }
 
       setCheckout((prev) => ({
