@@ -334,15 +334,15 @@ const MercadoPagoCheckout = ({
       {/* Trust Badges */}
       <div className="flex flex-wrap items-center justify-center gap-8 mt-16">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">🔒</span>
+          <Lock className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">Pagamento 100% Seguro</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">⚡</span>
+          <Zap className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">Acesso Imediato</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">🎯</span>
+          <Target className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">7 dias de garantia</span>
         </div>
       </div>
