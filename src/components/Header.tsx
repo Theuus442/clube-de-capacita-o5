@@ -8,47 +8,48 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-3 lg:py-4">
+        <div className="flex items-center justify-between py-2 lg:py-3">
           {/* Logo */}
-          <a href="/" className="flex items-center hover:opacity-80 transition-opacity flex-shrink-0">
+          <a href="/" className="flex items-center hover:opacity-90 transition-opacity flex-shrink-0 group">
             <img
               src={logo}
               alt="Clube de Capacitação Profissional"
-              className="h-16 lg:h-20 w-auto"
+              className="h-14 lg:h-18 w-auto group-hover:scale-105 transition-transform"
             />
           </a>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#para-quem" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <nav className="hidden md:flex items-center gap-1">
+            <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Para quem é
             </a>
-            <a href="#o-que-e" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#o-que-e" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               O que é
             </a>
-            <a href="#trilhas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#trilhas" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Trilhas
             </a>
-            <a href="#planos" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#planos" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Planos
             </a>
           </nav>
 
           {/* CTA */}
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="hidden sm:inline-flex"
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-primary/5"
             >
               Entrar
             </Button>
-            <Button 
-              variant="hero" 
+            <Button
+              variant="hero"
               size="sm"
               onClick={scrollToPlans}
+              className="font-semibold shadow-md hover:shadow-lg transition-shadow"
             >
               Quero acesso ao clube
             </Button>
