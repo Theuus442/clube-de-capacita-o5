@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, AlertCircle } from 'lucide-react';
 import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
 import { Button } from '@/components/ui/button';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  // Replace 'URL_DA_FUNCAO_SUPABASE' with your actual Supabase function URL
+  // ⚠️ IMPORTANTE: Substitua esta URL pela sua função Supabase real
+  // Veja MERCADO_PAGO_SETUP.md para o guia completo
   const SUPABASE_FUNCTION_URL = 'https://your-project.supabase.co/functions/v1/create-preference';
 
   return (
