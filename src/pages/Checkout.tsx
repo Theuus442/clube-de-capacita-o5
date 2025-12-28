@@ -10,7 +10,7 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-to-b from-primary/5 to-background py-12 sm:py-16">
+      <div className="bg-gradient-to-b from-primary/5 to-background py-6 sm:py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate('/')}
@@ -32,12 +32,12 @@ const CheckoutPage = () => {
       </div>
 
       {/* Checkout Component */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <MercadoPagoCheckout supabaseFunctionUrl={SUPABASE_FUNCTION_URL} />
       </div>
 
       {/* FAQ Section */}
-      <div className="bg-muted/30 py-12 sm:py-16">
+      <div className="bg-muted/30 py-8 sm:py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
             Perguntas Frequentes
