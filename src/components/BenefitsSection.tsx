@@ -51,9 +51,6 @@ const BenefitsSection = () => {
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             O Clube de Capacitação Profissional é <span className="text-gradient">para você</span> que:
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Se você leva sua evolução profissional a sério, esse clube é para você.
-          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
