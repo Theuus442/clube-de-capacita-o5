@@ -31,143 +31,32 @@ Esta é uma chave de **teste**. Para produção, você precisará:
 
 ✅ **A função já foi criada para você!** Veja `supabase/functions/create-preference/index.ts`
 
-### Configuração Necessária:
+### Próximos Passos
 
-A função já está pronta, mas você precisa:
+**✅ A função Supabase já está criada! Veja: `supabase/functions/create-preference/index.ts`**
 
-interface RequestBody {
-  planType: "mensal" | "anual";
-}
+Para fazer o deployment e ativar o checkout:
 
-const planConfig = {
-  mensal: {
-    title: "Plano Mensal",
-    price: 49,
-    currency_id: "BRL",
-  },
-  anual: {
-    title: "Plano Anual",
-    price: 397,
-    currency_id: "BRL",
-  },
-};
+1. **Obtenha o Access Token do Mercado Pago**
+   - Acesse: [Painel Mercado Pago](https://www.mercadopago.com.br/developers/panel/)
+   - Vá em Credenciais → Access Token de Produção
 
-serve(async (req: Request) => {
-  // Handle CORS
-  if (req.method === "OPTIONS") {
-    return new Response("ok", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
-    });
-  }
+2. **Configure no Supabase**
+   - Project Settings → Secrets
+   - Adicione: `MERCADO_PAGO_ACCESS_TOKEN` = seu token
 
-  try {
-    // Parse request body
-    const { planType }: RequestBody = await req.json();
+3. **Deploy da Função**
+   ```bash
+   supabase login
+   supabase link --project-ref zajyeykcepcrlngmdpvf
+   supabase functions deploy create-preference
+   ```
 
-    // Validate plan type
-    if (!planType || !["mensal", "anual"].includes(planType)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid plan type" }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
-    }
+4. **URL Já Configurada!**
+   - ✅ Já atualizei em `src/pages/Checkout.tsx`
+   - URL: `https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference`
 
-    const plan = planConfig[planType];
-
-    // Create preference payload
-    const preferencePayload = {
-      items: [
-        {
-          title: plan.title,
-          description: plan.title,
-          quantity: 1,
-          unit_price: plan.price,
-          currency_id: plan.currency_id,
-        },
-      ],
-      auto_return: "approved",
-      back_urls: {
-        success: `${new URL(req.url).origin}/checkout-success`,
-        failure: `${new URL(req.url).origin}/checkout-failure`,
-        pending: `${new URL(req.url).origin}/checkout-pending`,
-      },
-      notification_url: `${new URL(req.url).origin}/api/webhooks/mercado-pago`,
-    };
-
-    // Create preference in Mercado Pago
-    const response = await fetch(MERCADO_PAGO_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${MERCADO_PAGO_ACCESS_TOKEN}`,
-      },
-      body: JSON.stringify(preferencePayload),
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("Mercado Pago API error:", error);
-      throw new Error(`Mercado Pago API error: ${response.statusText}`);
-    }
-
-    const preference = await response.json();
-
-    return new Response(JSON.stringify({ preferenceId: preference.id }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Internal server error" }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
-  }
-});
-```
-
-### Passo 3: Configure o token de acesso
-
-1. Vá para o [painel do Mercado Pago](https://www.mercadopago.com.br/developers/panel/)
-2. Copie seu **Access Token** de produção
-3. No Supabase, defina a variável de ambiente:
-   - Vá para **Project Settings** → **API**
-   - Adicione a variável de ambiente: `MERCADO_PAGO_ACCESS_TOKEN`
-
-### Passo 4: Deploy da função
-
-```bash
-supabase functions deploy create-preference --no-verify-jwt
-```
-
-### Passo 5: Configure a URL da função
-
-Atualize o arquivo `src/pages/Checkout.tsx`:
-
-```typescript
-const SUPABASE_FUNCTION_URL = 'https://your-project-id.supabase.co/functions/v1/create-preference';
-```
-
-Substitua `your-project-id` pelo ID do seu projeto Supabase.
+**📖 Veja o guia completo em: `SUPABASE_DEPLOYMENT_GUIDE.md`**
 
 ## 📱 Usando o Componente
 
