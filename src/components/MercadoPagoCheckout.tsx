@@ -1,24 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Button } from '@/components/ui/button';
-import { Crown, Zap, Check, Loader } from 'lucide-react';
+import { Check, Loader } from 'lucide-react';
+import { plans } from '@/config/plans';
 
 // Initialize Mercado Pago with public key
 const PUBLIC_KEY = 'TEST-f7e8a080-93c5-4ed9-a60a-01d8a90c014b';
 initMercadoPago(PUBLIC_KEY);
-
-interface Plan {
-  id: string;
-  name: string;
-  price: string;
-  period: string;
-  description: string;
-  features: string[];
-  icon: React.ReactNode;
-  highlight?: string;
-}
 
 interface CheckoutState {
   selectedPlanId: string | null;
@@ -26,39 +16,6 @@ interface CheckoutState {
   loading: boolean;
   error: string | null;
 }
-
-const plans: Plan[] = [
-  {
-    id: 'mensal',
-    name: 'Plano Mensal',
-    price: '49',
-    period: '/mês',
-    description: 'Acesso completo por 1 mês',
-    features: [
-      'Todos os cursos disponíveis',
-      'Certificados inclusos',
-      'Suporte por email',
-      'Atualizações de conteúdo',
-    ],
-    icon: <Zap className="w-6 h-6" />,
-  },
-  {
-    id: 'anual',
-    name: 'Plano Anual',
-    price: '397',
-    period: '/ano',
-    description: 'Acesso completo por 12 meses',
-    features: [
-      'Todos os cursos disponíveis',
-      'Certificados inclusos',
-      'Suporte prioritário',
-      'Atualizações de conteúdo',
-      'Melhor custo-benefício',
-    ],
-    icon: <Crown className="w-6 h-6" />,
-    highlight: 'Mais vantajoso',
-  },
-];
 
 const MercadoPagoCheckout = ({
   supabaseFunctionUrl = 'URL_DA_FUNCAO_SUPABASE',
