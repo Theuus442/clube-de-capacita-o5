@@ -31,21 +31,13 @@ Esta é uma chave de **teste**. Para produção, você precisará:
 
 Você precisa criar uma função Supabase Edge que crie uma preferência de pagamento no Mercado Pago. Aqui está um exemplo completo:
 
-### Passo 1: Crie a função no Supabase
+### Passo 1: A Função Já Foi Criada!
 
-```bash
-supabase functions new create-preference
-```
+✅ Já criei o arquivo `supabase/functions/create-preference/index.ts` para você!
 
-### Passo 2: Implemente a função
+### Passo 2: Configure o Acesso do Mercado Pago
 
-Arquivo: `supabase/functions/create-preference/index.ts`
-
-```typescript
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const MERCADO_PAGO_API_URL = "https://api.mercadopago.com/checkout/preferences";
-const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
+A função já está implementada com:
 
 interface RequestBody {
   planType: "mensal" | "anual";
