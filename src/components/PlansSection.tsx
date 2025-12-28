@@ -40,11 +40,11 @@ const plans = [
 ];
 
 const PlansSection = () => {
+  const navigate = useNavigate();
+
   // Função para redirecionar para o checkout de assinatura
   const handleSubscribe = (planId: string) => {
-    // TODO: Integrar com Mercado Pago Preapproval (Assinatura Recorrente)
-    console.log(`Iniciando assinatura do plano: ${planId}`);
-    alert(`Em breve você será redirecionado para o checkout de assinatura do plano ${planId === 'anual' ? 'Anual' : 'Semestral'}.`);
+    navigate('/checkout');
   };
 
   return (
