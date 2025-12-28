@@ -186,13 +186,13 @@ const MercadoPagoCheckout = ({
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {plans.map((plan) => {
           const isSelected = checkout.selectedPlanId === plan.id;
-          const isAnual = plan.id === 'anual';
+          const isPopular = plan.popular;
 
           return (
             <div
               key={plan.id}
               className={`relative bg-background rounded-3xl p-8 lg:p-10 border-2 transition-all duration-300 ${
-                isAnual
+                isPopular
                   ? 'border-primary shadow-glow'
                   : 'border-border hover:border-primary/30'
               } ${isSelected ? 'ring-2 ring-primary' : ''}`}
