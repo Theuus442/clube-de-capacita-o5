@@ -92,6 +92,9 @@ serve(async (req: Request) => {
     }
 
     console.log('Criando preferência para plano:', planType)
+    console.log('Plano configurado:', plan)
+    console.log('Preço enviado ao Mercado Pago:', plan.price)
+    console.log('Payload completo:', JSON.stringify(preferencePayload, null, 2))
 
     // Create preference in Mercado Pago
     const response = await fetch(MERCADO_PAGO_API_URL, {
