@@ -1,7 +1,39 @@
-import { Check, Star, ShieldCheck, CreditCard, Target, Zap } from "lucide-react";
+import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { plans } from "@/config/plans";
+
+const plans = [
+  {
+    id: "anual",
+    name: "Plano Anual",
+    highlight: "Mais vantajoso",
+    description: "12 meses de acesso ilimitado à plataforma",
+    price: "397",
+    period: "",
+    features: [
+      "Todos os cursos disponíveis",
+      "Certificados inclusos",
+      "Melhor custo-benefício",
+      "Ideal para quem pensa no médio e longo prazo",
+    ],
+    icon: <Crown className="w-6 h-6" />,
+    popular: true,
+  },
+  {
+    id: "semestral",
+    name: "Plano Semestral",
+    description: "Acesso completo à plataforma por 6 meses",
+    price: "297",
+    period: "",
+    features: [
+      "Todos os cursos disponíveis",
+      "Certificados inclusos",
+      "Acesso por 6 meses",
+    ],
+    icon: <Zap className="w-6 h-6" />,
+    popular: false,
+  },
+];
 
 const PlansSection = () => {
   const navigate = useNavigate();
