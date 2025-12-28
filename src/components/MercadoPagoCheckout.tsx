@@ -217,8 +217,8 @@ const MercadoPagoCheckout = ({
 
   // Show plans grid
   return (
-    <section className="w-full py-12">
-      <div className="text-center max-w-3xl mx-auto mb-12">
+    <section className="w-full py-0">
+      <div className="text-center max-w-3xl mx-auto mb-8">
         <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
           Escolha seu <span className="text-gradient">plano</span>
         </h2>
