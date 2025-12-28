@@ -13,11 +13,12 @@ const Header = () => {
         <div className="flex items-center justify-between py-3 lg:py-4">
           {/* Logo */}
           <a href="/" className="flex items-center hover:opacity-80 transition-opacity flex-shrink-0">
-            <div style={{ backgroundColor: '#FFFFFF' }} className="rounded-xl p-4 shadow-sm">
+            <div style={{ backgroundColor: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="rounded-2xl px-6 py-4 shadow-md">
               <img
                 src={logo}
                 alt="Clube de Capacitação Profissional"
-                className="h-16 lg:h-20 w-auto block"
+                className="h-16 lg:h-20 w-auto"
+                style={{ display: 'block' }}
               />
             </div>
           </a>
