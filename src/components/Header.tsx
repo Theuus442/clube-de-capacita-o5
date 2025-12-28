@@ -12,11 +12,11 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-2 lg:py-3">
           {/* Logo */}
-          <a href="/" className="flex items-center hover:opacity-90 transition-opacity flex-shrink-0 group">
+          <a href="/" className="flex items-center hover:opacity-90 transition-opacity group">
             <img
               src={logo}
               alt="Clube de Capacitação Profissional"
-              className="h-12 lg:h-16 w-auto group-hover:scale-105 transition-transform"
+              className="h-12 lg:h-16 w-auto max-w-xs lg:max-w-sm group-hover:scale-105 transition-transform"
             />
           </a>
 
