@@ -210,7 +210,7 @@ const MercadoPagoCheckout = ({
               {/* Icon */}
               <div
                 className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${
-                  isAnual
+                  isPopular
                     ? 'bg-hero-gradient text-primary-foreground shadow-lg'
                     : 'bg-muted text-foreground'
                 }`}
@@ -230,7 +230,7 @@ const MercadoPagoCheckout = ({
                   <span className="text-sm text-muted-foreground">R$</span>
                   <span
                     className={`font-display text-5xl font-bold ${
-                      isAnual ? 'text-gradient' : 'text-foreground'
+                      isPopular ? 'text-gradient' : 'text-foreground'
                     }`}
                   >
                     {plan.price}
@@ -245,12 +245,12 @@ const MercadoPagoCheckout = ({
                   <li key={index} className="flex items-start gap-3">
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                        isAnual ? 'bg-primary/10' : 'bg-muted'
+                        isPopular ? 'bg-primary/10' : 'bg-muted'
                       }`}
                     >
                       <Check
                         className={`w-3 h-3 ${
-                          isAnual ? 'text-primary' : 'text-foreground'
+                          isPopular ? 'text-primary' : 'text-foreground'
                         }`}
                       />
                     </div>
@@ -261,7 +261,7 @@ const MercadoPagoCheckout = ({
 
               {/* CTA Button */}
               <Button
-                variant={isAnual ? 'hero' : 'outline'}
+                variant={isPopular ? 'hero' : 'outline'}
                 size="lg"
                 className="w-full"
                 onClick={() => handlePlanSelect(plan.id)}
