@@ -241,7 +241,7 @@ const MercadoPagoCheckout = ({
           return (
             <div
               key={plan.id}
-              className={`relative bg-background rounded-3xl p-8 lg:p-10 border-2 transition-all duration-300 ${
+              className={`relative bg-background rounded-3xl p-6 lg:p-8 border-2 transition-all duration-300 ${
                 isPopular
                   ? 'border-primary shadow-glow'
                   : 'border-border hover:border-primary/30'
