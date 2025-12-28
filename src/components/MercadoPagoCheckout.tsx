@@ -98,10 +98,12 @@ const MercadoPagoCheckout = ({
     });
 
     try {
+      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
       const response = await fetch(supabaseFunctionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${anonKey}`,
         },
         body: JSON.stringify({
           planType: planId,
