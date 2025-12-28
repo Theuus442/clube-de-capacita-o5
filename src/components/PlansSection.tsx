@@ -1,4 +1,4 @@
-import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown } from "lucide-react";
+import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
