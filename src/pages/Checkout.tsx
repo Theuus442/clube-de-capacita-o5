@@ -1,6 +1,10 @@
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
+import { Button } from '@/components/ui/button';
 
 const CheckoutPage = () => {
+  const navigate = useNavigate();
   // Replace 'URL_DA_FUNCAO_SUPABASE' with your actual Supabase function URL
   const SUPABASE_FUNCTION_URL = 'https://your-project.supabase.co/functions/v1/create-preference';
 
@@ -9,9 +13,16 @@ const CheckoutPage = () => {
       {/* Header */}
       <div className="bg-gradient-to-b from-primary/5 to-background py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar
+          </button>
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-              Assine Agora
+              Escolha seu Plano
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Obtenha acesso completo a todos os nossos cursos e recursos premium.
