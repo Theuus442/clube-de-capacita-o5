@@ -332,7 +332,7 @@ const MercadoPagoCheckout = ({
       </div>
 
       {/* Trust Badges */}
-      <div className="flex flex-wrap items-center justify-center gap-8 mt-16">
+      <div className="flex flex-wrap items-center justify-center gap-6 mt-10">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Lock className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">Pagamento 100% Seguro</span>
