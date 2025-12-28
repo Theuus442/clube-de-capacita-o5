@@ -20,7 +20,7 @@ const CheckoutPage = () => {
             Voltar
           </button>
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
               Escolha seu Plano
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
