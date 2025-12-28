@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   // ✅ URL da função Supabase configurada
-  const SUPABASE_FUNCTION_URL = 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference';
+  const SUPABASE_FUNCTION_URL = 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout';
 
   return (
     <div className="min-h-screen bg-background">
