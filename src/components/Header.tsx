@@ -16,7 +16,7 @@ const Header = () => {
             <img
               src={logo}
               alt="Clube de Capacitação Profissional"
-              className="h-14 lg:h-16 w-auto"
+              className="h-16 lg:h-20 w-auto"
             />
           </a>
 
