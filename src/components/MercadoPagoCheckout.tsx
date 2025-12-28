@@ -251,7 +251,7 @@ const MercadoPagoCheckout = ({
               {plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-hero-gradient text-primary-foreground text-sm font-semibold shadow-lg">
-                    👑
+                    <Crown className="w-4 h-4" />
                     {plan.highlight}
                   </span>
                 </div>
