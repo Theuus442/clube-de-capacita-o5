@@ -18,6 +18,7 @@ interface Plan {
   features: string[];
   icon: React.ReactNode;
   highlight?: string;
+  popular?: boolean;
 }
 
 interface CheckoutState {
@@ -42,6 +43,7 @@ const plans: Plan[] = [
     ],
     icon: <Crown className="w-6 h-6" />,
     highlight: 'Mais vantajoso',
+    popular: true,
   },
   {
     id: 'semestral',
@@ -55,6 +57,7 @@ const plans: Plan[] = [
       'Acesso por 6 meses',
     ],
     icon: <Zap className="w-6 h-6" />,
+    popular: false,
   },
 ];
 
