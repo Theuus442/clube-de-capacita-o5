@@ -233,7 +233,7 @@ const MercadoPagoCheckout = ({
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {plans.map((plan) => {
           const isSelected = checkout.selectedPlanId === plan.id;
           const isPopular = plan.popular;
