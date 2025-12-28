@@ -33,6 +33,26 @@ const CheckoutPage = () => {
         </div>
       </div>
 
+      {/* Configuration Alert */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg flex gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-amber-800">
+            <p className="font-semibold mb-1">
+              ⚙️ Configuração Necessária
+            </p>
+            <p className="mb-2">
+              Para usar o checkout, você precisa:
+            </p>
+            <ol className="list-decimal list-inside space-y-1 text-amber-700">
+              <li>Criar uma função Supabase Edge (veja <code className="bg-white px-2 py-0.5 rounded">MERCADO_PAGO_SETUP.md</code>)</li>
+              <li>Atualizar a URL em <code className="bg-white px-2 py-0.5 rounded">src/pages/Checkout.tsx</code></li>
+              <li>Adicionar o Access Token do Mercado Pago no Supabase</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
       {/* Checkout Component */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <MercadoPagoCheckout supabaseFunctionUrl={SUPABASE_FUNCTION_URL} />
