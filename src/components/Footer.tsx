@@ -1,6 +1,7 @@
 import { ArrowRight, Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
+
+const logo = "https://cdn.builder.io/api/v1/image/assets%2Fe5bb440d62b9444d8b1b5ce7174c9669%2Fee393151f3d54614831850d1a16b29db?format=webp&width=800";
 
 const Footer = () => {
   const scrollToPlans = () => {
@@ -79,15 +80,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-background/70">
                 <Mail className="w-4 h-4" />
-                <span className="text-sm">contato@threynnare.com.br</span>
+                <span className="text-sm">atendimento@threynnare.com.br</span>
               </li>
               <li className="flex items-center gap-3 text-background/70">
                 <Phone className="w-4 h-4" />
-                <span className="text-sm">(11) 99999-9999</span>
+                <span className="text-sm">82 3013-0024</span>
               </li>
               <li className="flex items-start gap-3 text-background/70">
                 <MapPin className="w-4 h-4 mt-0.5" />
-                <span className="text-sm">São Paulo, SP</span>
+                <span className="text-sm">Maceió, AL</span>
               </li>
             </ul>
           </div>

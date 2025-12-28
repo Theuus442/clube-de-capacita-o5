@@ -35,8 +35,8 @@ const Index = () => {
         <Header />
         <main>
           <HeroSection />
-          <BenefitsSection />
           <WhatIsSection />
+          <BenefitsSection />
           <TracksSection />
           <ComparisonSection />
           <PlansSection />

@@ -1,10 +1,10 @@
-import { 
+import {
   Rocket,
   Briefcase,
   Sparkles,
   Monitor,
   GraduationCap,
-  Wrench,
+  Share2,
   ChevronRight,
   ArrowRight
 } from "lucide-react";
@@ -41,10 +41,10 @@ const tracks = [
     color: "from-green-500 to-green-600",
   },
   {
-    icon: <Wrench className="w-6 h-6" />,
-    title: "Industrial",
-    courses: ["Eletricista", "Soldador MIG/MAG", "Soldador TIG", "Instalador de Placas Solar", "Robótica"],
-    color: "from-orange-500 to-orange-600",
+    icon: <Share2 className="w-6 h-6" />,
+    title: "Mídias Digitais",
+    courses: ["Marketing Digital", "Instagram para Vendas", "Mídias Digitais", "YouTube", "Canva", "Operador de Podcast", "WhatsApp Business"],
+    color: "from-red-500 to-red-600",
   },
 ];
 
