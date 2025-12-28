@@ -46,21 +46,6 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Devices info */}
-          <div className="flex items-center justify-center gap-6 text-muted-foreground animate-fade-up animation-delay-600">
-            <div className="flex items-center gap-2">
-              <Monitor className="w-5 h-5" />
-              <span className="text-sm">Computador</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Tablet className="w-5 h-5" />
-              <span className="text-sm">Tablet</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Smartphone className="w-5 h-5" />
-              <span className="text-sm">Celular</span>
-            </div>
-          </div>
         </div>
       </div>
 
