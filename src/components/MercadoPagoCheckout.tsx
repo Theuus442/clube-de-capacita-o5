@@ -196,7 +196,7 @@ const MercadoPagoCheckout = ({
               onClick={handleReset}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
-              ✕
+              <X className="w-5 h-5" />
             </button>
           </div>
 
