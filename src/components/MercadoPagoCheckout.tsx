@@ -219,7 +219,7 @@ const MercadoPagoCheckout = ({
   return (
     <section className="w-full py-0">
       <div className="text-center max-w-3xl mx-auto mb-8">
-        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
           Escolha seu <span className="text-gradient">plano</span>
         </h2>
         <p className="text-muted-foreground text-lg">
