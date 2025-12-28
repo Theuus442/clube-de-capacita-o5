@@ -1,13 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Button } from '@/components/ui/button';
-import { Check, Loader, Crown, Zap } from 'lucide-react';
-
-// Initialize Mercado Pago with public key
-const PUBLIC_KEY = 'TEST-f7e8a080-93c5-4ed9-a60a-01d8a90c014b';
-initMercadoPago(PUBLIC_KEY);
+import { Check, Loader, Crown, Zap, X, Lock, Target } from 'lucide-react';
 
 interface Plan {
   id: string;
@@ -98,10 +93,17 @@ const MercadoPagoCheckout = ({
     });
 
     try {
+      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      if (!anonKey) {
+        throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
+      }
+
       const response = await fetch(supabaseFunctionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${anonKey}`,
         },
         body: JSON.stringify({
           planType: planId,
@@ -109,16 +111,29 @@ const MercadoPagoCheckout = ({
       });
 
       if (!response.ok) {
+        let errorDetails = '';
+        try {
+          const errorData = await response.json();
+          errorDetails = errorData.error || JSON.stringify(errorData);
+        } catch {
+          errorDetails = await response.text();
+        }
+        console.error('Erro da função Supabase:', {
+          status: response.status,
+          statusText: response.statusText,
+          details: errorDetails,
+        });
         throw new Error(
-          `Erro da função: ${response.status}. Verifique se a URL está correta e a função está deployada.`
+          `Erro da função: ${response.status} ${response.statusText}. Detalhes: ${errorDetails}`
         );
       }
 
       const data = await response.json();
+      console.log('Resposta da função:', data);
 
       if (!data.preferenceId) {
         throw new Error(
-          'Preferência ID não recebida. Verifique a resposta da função Supabase.'
+          `Preferência ID não recebida. Resposta: ${JSON.stringify(data)}`
         );
       }
 
@@ -128,8 +143,18 @@ const MercadoPagoCheckout = ({
         loading: false,
       }));
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Erro ao processar pagamento';
+      let errorMessage = 'Erro ao processar pagamento';
+
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      } else if (err && typeof err === 'object') {
+        errorMessage = JSON.stringify(err);
+      }
+
+      console.error('Erro no checkout:', err);
+
       setCheckout({
         selectedPlanId: null,
         preferenceId: null,
@@ -166,13 +191,23 @@ const MercadoPagoCheckout = ({
               onClick={handleReset}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
-              ✕
+              <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="mb-8">
-            <Wallet preferenceId={checkout.preferenceId} />
-          </div>
+          <Button
+            size="lg"
+            className="w-full mb-4"
+            onClick={() => {
+              // Redirecionar para o checkout do Mercado Pago
+              const checkoutUrl = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${checkout.preferenceId}`;
+              window.location.href = checkoutUrl;
+            }}
+          >
+            <span className="flex items-center gap-2">
+              Pagar com Mercado Pago
+            </span>
+          </Button>
 
           <button
             onClick={handleReset}
@@ -187,9 +222,9 @@ const MercadoPagoCheckout = ({
 
   // Show plans grid
   return (
-    <section className="w-full py-12">
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+    <section className="w-full py-0">
+      <div className="text-center max-w-3xl mx-auto mb-8">
+        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
           Escolha seu <span className="text-gradient">plano</span>
         </h2>
         <p className="text-muted-foreground text-lg">
@@ -203,7 +238,7 @@ const MercadoPagoCheckout = ({
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {plans.map((plan) => {
           const isSelected = checkout.selectedPlanId === plan.id;
           const isPopular = plan.popular;
@@ -211,7 +246,7 @@ const MercadoPagoCheckout = ({
           return (
             <div
               key={plan.id}
-              className={`relative bg-background rounded-3xl p-8 lg:p-10 border-2 transition-all duration-300 ${
+              className={`relative bg-background rounded-3xl p-6 lg:p-8 border-2 transition-all duration-300 ${
                 isPopular
                   ? 'border-primary shadow-glow'
                   : 'border-border hover:border-primary/30'
@@ -221,7 +256,7 @@ const MercadoPagoCheckout = ({
               {plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-hero-gradient text-primary-foreground text-sm font-semibold shadow-lg">
-                    👑
+                    <Crown className="w-4 h-4" />
                     {plan.highlight}
                   </span>
                 </div>
@@ -302,17 +337,17 @@ const MercadoPagoCheckout = ({
       </div>
 
       {/* Trust Badges */}
-      <div className="flex flex-wrap items-center justify-center gap-8 mt-16">
+      <div className="flex flex-wrap items-center justify-center gap-6 mt-10">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">🔒</span>
+          <Lock className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">Pagamento 100% Seguro</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">⚡</span>
+          <Zap className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">Acesso Imediato</span>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <span className="text-primary">🎯</span>
+          <Target className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium">7 dias de garantia</span>
         </div>
       </div>
