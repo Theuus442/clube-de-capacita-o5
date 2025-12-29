@@ -117,7 +117,11 @@ A URL agora é configurada automaticamente em `src/lib/api-config.ts`:
 
 ### Erro: "Failed to fetch"
 **Causa:** Função não deployada ou token não configurado
-**Solução:** Siga os passos 1 e 2 acima
+**Solução:** Verifique se `create-checkout` foi deployada. Rode: `supabase functions deploy create-checkout`
+
+### Erro: "NOT_FOUND" (404)
+**Causa:** A função `create-checkout` não foi encontrada no Supabase
+**Solução:** Deploy da função: `supabase functions deploy create-checkout`
 
 ### Erro: "URL de redirecionamento inválida"
 **Causa:** O `redirectUrl` não começa com `http`
@@ -128,8 +132,8 @@ A URL agora é configurada automaticamente em `src/lib/api-config.ts`:
 **Solução:** Verifique em `src/components/MercadoPagoCheckout.tsx` se os planos estão corretos
 
 ### Erro: "Erro ao criar preferência: 401"
-**Causa:** Token do Mercado Pago inválido ou expirado
-**Solução:** Regenere um novo token de PRODUÇÃO e atualize no Supabase
+**Causa:** Token do Mercado Pago (MP_ACCESS_TOKEN) inválido ou expirado
+**Solução:** Regenere um novo token de PRODUÇÃO no Mercado Pago e atualize no Supabase Secrets
 
 ---
 
