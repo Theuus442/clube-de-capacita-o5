@@ -29,6 +29,10 @@ const features = [
     icon: <Smartphone className="w-5 h-5" />,
     text: "Estude no celular, tablet ou computador",
   },
+  {
+    icon: <MessageCircle className="w-5 h-5" />,
+    text: "Suporte pedagógico online para dúvidas e ajudas",
+  },
 ];
 
 const WhatIsSection = () => {
