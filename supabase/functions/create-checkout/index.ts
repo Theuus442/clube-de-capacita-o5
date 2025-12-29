@@ -1,10 +1,11 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const MERCADO_PAGO_API_URL = 'https://api.mercadopago.com/checkout/preferences'
-const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')
+const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MP_ACCESS_TOKEN')
 
 interface RequestBody {
   planType: 'anual' | 'semestral'
+  redirectUrl?: string
 }
 
 const planConfig = {
