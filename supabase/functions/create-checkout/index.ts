@@ -30,7 +30,7 @@ serve(async (req: Request) => {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
     })
   }
@@ -72,10 +72,20 @@ serve(async (req: Request) => {
 
     // Validate access token
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
-      console.error('MP_ACCESS_TOKEN não configurado')
+      console.error('❌ MP_ACCESS_TOKEN não configurado em Supabase Secrets')
+      console.error('Para configurar, acesse:')
+      console.error('https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets')
+      console.error('')
+      console.error('Passos:')
+      console.error('1. Acesse: https://www.mercadopago.com.br/developers/panel/credentials')
+      console.error('2. Selecione MODO TESTE (switch no topo)')
+      console.error('3. Copie o "Access Token" da seção teste (começa com TEST-)')
+      console.error('4. Em Supabase, adicione novo secret: MP_ACCESS_TOKEN = {seu_token}')
+
       return new Response(
         JSON.stringify({
           error: 'Erro na configuração do servidor. Token do Mercado Pago (MP_ACCESS_TOKEN) não encontrado.',
+          instructions: 'Acesse https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets e configure MP_ACCESS_TOKEN com seu token de teste do Mercado Pago',
         }),
         {
           status: 500,
@@ -112,10 +122,9 @@ serve(async (req: Request) => {
       notification_url: `${cleanBaseUrl}/api/webhooks/mercado-pago`,
     }
 
-    console.log('Criando preferência para plano:', planType)
-    console.log('Plano configurado:', plan)
-    console.log('Preço enviado ao Mercado Pago:', plan.price)
-    console.log('Payload completo:', JSON.stringify(preferencePayload, null, 2))
+    console.log('📋 Criando preferência para plano:', planType)
+    console.log('💰 Plano:', plan)
+    console.log('🔗 Base URL:', cleanBaseUrl)
 
     // Create preference in Mercado Pago
     const response = await fetch(MERCADO_PAGO_API_URL, {
@@ -127,19 +136,27 @@ serve(async (req: Request) => {
       body: JSON.stringify(preferencePayload),
     })
 
+    const responseData = await response.json()
+
     if (!response.ok) {
-      const error = await response.text()
-      console.error('Erro da API Mercado Pago:', error)
+      console.error('❌ Erro da API Mercado Pago:')
+      console.error('Status:', response.status)
+      console.error('Resposta:', JSON.stringify(responseData, null, 2))
+
+      const errorMessage = responseData?.message || responseData?.error || 'Erro desconhecido da API Mercado Pago'
       throw new Error(
-        `Erro ao criar preferência: ${response.status} ${response.statusText}`,
+        `Erro ao criar preferência (${response.status}): ${errorMessage}`,
       )
     }
 
-    const preference = await response.json()
+    if (!responseData?.id) {
+      console.error('❌ Resposta inválida do Mercado Pago:', responseData)
+      throw new Error('Resposta inválida: preference ID não encontrado')
+    }
 
-    console.log('Preferência criada com sucesso:', preference.id)
+    console.log('✅ Preferência criada com sucesso:', responseData.id)
 
-    return new Response(JSON.stringify({ preferenceId: preference.id }), {
+    return new Response(JSON.stringify({ preferenceId: responseData.id }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +164,7 @@ serve(async (req: Request) => {
       },
     })
   } catch (error) {
-    console.error('Erro na função:', error)
+    console.error('❌ Erro completo na função:', error)
     return new Response(
       JSON.stringify({
         error:
