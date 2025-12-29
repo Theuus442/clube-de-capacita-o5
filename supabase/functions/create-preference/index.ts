@@ -72,10 +72,10 @@ serve(async (req: Request) => {
 
     // Validate access token
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
-      console.error('MERCADO_PAGO_ACCESS_TOKEN não configurado')
+      console.error('MP_ACCESS_TOKEN não configurado')
       return new Response(
         JSON.stringify({
-          error: 'Erro na configuração do servidor. Token do Mercado Pago não encontrado.',
+          error: 'Erro na configuração do servidor. Token do Mercado Pago (MP_ACCESS_TOKEN) não encontrado.',
         }),
         {
           status: 500,
