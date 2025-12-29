@@ -5,6 +5,7 @@ const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')
 
 interface RequestBody {
   planType: 'anual' | 'semestral'
+  redirectUrl?: string
 }
 
 const planConfig = {
