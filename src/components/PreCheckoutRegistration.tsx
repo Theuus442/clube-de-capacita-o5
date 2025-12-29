@@ -77,6 +77,16 @@ const PreCheckoutRegistration = ({
     setError(null);
 
     try {
+      // Log start of checkout flow
+      console.group('🛒 CHECKOUT FLOW INICIADO');
+      console.log('📦 Plano selecionado:', planType);
+      console.log('👤 Dados do usuário:', {
+        nome: formData.fullName,
+        email: formData.email,
+        sexo: formData.gender,
+        planType: planType,
+      });
+      console.groupEnd();
       // Step 1: Create user in the school's API with "bloqueado" status
       console.log('📝 Criando usuário na plataforma...');
 
