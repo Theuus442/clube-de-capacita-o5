@@ -3,7 +3,13 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 console.log("Webhook MP -> Escola (Versão FINAL) 🚀")
 
 serve(async (req) => {
+  // Log TUDO que chega no webhook
+  console.log('📍 [WEBHOOK] Método:', req.method)
+  console.log('📍 [WEBHOOK] URL:', req.url)
+  console.log('📍 [WEBHOOK] Headers:', JSON.stringify(Object.fromEntries(req.headers), null, 2))
+
   if (req.method !== 'POST') {
+    console.log('⚠️ [WEBHOOK] Ignorando requisição não-POST')
     return new Response('Method Not Allowed', { status: 405 })
   }
 
@@ -12,7 +18,8 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}))
     const dataId = body.data?.id || body.id || url.searchParams.get('id')
 
-    console.log('Webhook recebido:', JSON.stringify(body, null, 2))
+    console.log('📍 [WEBHOOK] Body completo:', JSON.stringify(body, null, 2))
+    console.log('📍 [WEBHOOK] Data ID extraído:', dataId)
 
     // Filtro para ignorar avisos repetidos ou testes de conexão
     const action = body.action || body.type
