@@ -42,6 +42,7 @@ const Header = () => {
               variant="ghost"
               size="sm"
               className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-primary/5"
+              onClick={() => window.location.href = "https://temp-mail.org/pt/view/online.threynnare.com.br/metodo/index.php"}
             >
               Entrar
             </Button>
