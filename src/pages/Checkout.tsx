@@ -5,7 +5,7 @@ import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   // ✅ URL da função Supabase configurada
-  const SUPABASE_FUNCTION_URL = 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout';
+  const SUPABASE_FUNCTION_URL = 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference';
 
   return (
     <div className="min-h-screen bg-background">
