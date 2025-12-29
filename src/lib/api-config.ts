@@ -11,7 +11,7 @@ export function getMercadoPagoApiUrl(): string {
     return '/api/mercado-pago';
   } else {
     // Use Supabase function directly in production
-    return 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout';
+    return 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference';
   }
 }
 
