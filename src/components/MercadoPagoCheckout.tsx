@@ -24,6 +24,10 @@ interface CheckoutState {
   error: string | null;
 }
 
+interface MercadoPagoCheckoutProps {
+  onPlanSelect?: (planId: string) => void;
+}
+
 const plans: Plan[] = [
   {
     id: 'anual',
