@@ -258,7 +258,15 @@ const MercadoPagoCheckout = ({
 
       {checkout.error && (
         <div className="max-w-2xl mx-auto mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <p className="text-destructive text-sm">{checkout.error}</p>
+          <p className="text-destructive text-sm whitespace-pre-wrap">{checkout.error}</p>
+          <a
+            href="https://github.com/seu-repo/blob/main/SUPABASE_FUNCTION_DEBUG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-destructive text-xs underline mt-2 inline-block hover:text-destructive/80"
+          >
+            📖 Ver guia de debug
+          </a>
         </div>
       )}
 
