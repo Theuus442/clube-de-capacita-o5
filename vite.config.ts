@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
       "/api/mercado-pago": {
         target: "https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/mercado-pago/, "/create-preference"),
+        rewrite: (path) => path.replace(/^\/api\/mercado-pago/, "/create-checkout"),
       },
     },
   },
