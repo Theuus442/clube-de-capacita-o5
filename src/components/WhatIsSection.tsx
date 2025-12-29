@@ -1,9 +1,10 @@
-import { 
-  Globe, 
-  Infinity, 
-  Award, 
-  Target, 
+import {
+  Globe,
+  Infinity,
+  Award,
+  Target,
   Smartphone,
+  MessageCircle,
   ArrowRight
 } from "lucide-react";
 
