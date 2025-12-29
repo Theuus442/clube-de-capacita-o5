@@ -10,19 +10,19 @@ Se você está recebendo o erro **"TypeError: Failed to fetch"**, siga este chec
 supabase functions list
 
 # Você deve ver algo como:
-# create-preference  (deployed)
+# create-checkout  (deployed)
 ```
 
 ### Via Painel Supabase:
 1. Acesse: https://supabase.com/dashboard
 2. Projeto: `zajyeykcepcrlngmdpvf`
-3. Functions → Veja se `create-preference` aparece lá
-4. Se não aparecer, faça o deploy:
+3. Functions → Veja se `create-checkout` aparece lá
+4. Se não aparecer ou precisar atualizar, faça o deploy:
 
 ```bash
 supabase login
 supabase link --project-ref zajyeykcepcrlngmdpvf
-supabase functions deploy create-preference
+supabase functions deploy create-checkout
 ```
 
 ---
