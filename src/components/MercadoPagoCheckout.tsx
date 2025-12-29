@@ -108,7 +108,7 @@ const MercadoPagoCheckout = () => {
         console.error('Erro ao fazer fetch:', fetchErr);
         throw new Error(
           `Erro de conexão com a função Mercado Pago. Verifique:\n` +
-          `1. A função foi deployada? (supabase functions deploy create-preference)\n` +
+          `1. A função foi deployada? (supabase functions deploy create-checkout)\n` +
           `2. O token MP_ACCESS_TOKEN está configurado no Supabase?\n` +
           `3. Em produção, verifique a URL: ${apiUrl}\n\n` +
           `Erro técnico: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
