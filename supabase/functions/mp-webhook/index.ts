@@ -11,14 +11,29 @@ serve(async (req) => {
     const url = new URL(req.url)
     const body = await req.json().catch(() => ({}))
     const dataId = body.data?.id || body.id || url.searchParams.get('id')
-    
+
+    console.log('Webhook recebido:', JSON.stringify(body, null, 2))
+
     // Filtro para ignorar avisos repetidos ou testes de conexão
     const action = body.action || body.type
-    if (action !== 'payment.created' && body.topic !== 'payment') {
+    const topic = body.topic || body.type
+
+    // Aceita eventos de pagamento (várias variações possíveis)
+    const isPaymentEvent =
+      action === 'payment.created' ||
+      topic === 'payment' ||
+      action === 'payment.updated' ||
+      body.action === 'payment.updated'
+
+    if (!isPaymentEvent) {
+       console.log('Evento ignorado:', { action, topic })
        return new Response('Ignorado', { status: 200 })
     }
 
-    if (!dataId) return new Response('ID ausente', { status: 200 })
+    if (!dataId) {
+      console.log('ID ausente no webhook')
+      return new Response('ID ausente', { status: 200 })
+    }
 
     // 1. Confere se o pagamento existe no Mercado Pago
     const mpResponse = await fetch(`https://api.mercadopago.com/v1/payments/${dataId}`, {
