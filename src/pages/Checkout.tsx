@@ -4,8 +4,6 @@ import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  // ✅ URL do proxy local (evita problemas de CORS)
-  const SUPABASE_FUNCTION_URL = '/api/mercado-pago';
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +31,7 @@ const CheckoutPage = () => {
 
       {/* Checkout Component */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <MercadoPagoCheckout supabaseFunctionUrl={SUPABASE_FUNCTION_URL} />
+        <MercadoPagoCheckout />
       </div>
 
       {/* FAQ Section */}
