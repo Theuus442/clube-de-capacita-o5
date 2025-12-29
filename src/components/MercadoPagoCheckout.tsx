@@ -93,18 +93,25 @@ const MercadoPagoCheckout = ({
         throw new Error(`URL da função inválida: ${supabaseFunctionUrl}. Verifique se está configurada corretamente em src/pages/Checkout.tsx`);
       }
 
-      console.log('Iniciando requisição para:', supabaseFunctionUrl);
+      console.log('Iniciando requisição para:', apiUrl);
+      console.log('Usando proxy:', useProxy);
       console.log('Plano selecionado:', planId);
       console.log('Redirect URL:', window.location.origin);
 
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      // Only add Authorization header if not using proxy (in production)
+      if (!useProxy) {
+        headers['Authorization'] = `Bearer ${anonKey}`;
+      }
+
       let response;
       try {
-        response = await fetch(supabaseFunctionUrl, {
+        response = await fetch(apiUrl, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${anonKey}`,
-          },
+          headers,
           body: JSON.stringify({
             planType: planId,
             redirectUrl: window.location.origin,
@@ -113,10 +120,10 @@ const MercadoPagoCheckout = ({
       } catch (fetchErr) {
         console.error('Erro ao fazer fetch:', fetchErr);
         throw new Error(
-          `Erro de conexão com a função Supabase. Verifique:\n` +
+          `Erro de conexão com a função Mercado Pago. Verifique:\n` +
           `1. A função foi deployada? (supabase functions deploy create-preference)\n` +
-          `2. O token MERCADO_PAGO_ACCESS_TOKEN está configurado no Supabase?\n` +
-          `3. A URL está correta: ${supabaseFunctionUrl}\n\n` +
+          `2. O token MP_ACCESS_TOKEN está configurado no Supabase?\n` +
+          `3. Em produção, verifique a URL: ${apiUrl}\n\n` +
           `Erro técnico: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
         );
       }
