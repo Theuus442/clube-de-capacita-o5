@@ -240,16 +240,53 @@ const MercadoPagoCheckout = () => {
       </div>
 
       {checkout.error && (
-        <div className="max-w-2xl mx-auto mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <p className="text-destructive text-sm whitespace-pre-wrap">{checkout.error}</p>
-          <a
-            href="https://github.com/seu-repo/blob/main/SUPABASE_FUNCTION_DEBUG.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-destructive text-xs underline mt-2 inline-block hover:text-destructive/80"
-          >
-            📖 Ver guia de debug
-          </a>
+        <div className="max-w-2xl mx-auto mb-8">
+          <div className="p-6 bg-destructive/10 border border-destructive/20 rounded-2xl">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <svg className="w-6 h-6 text-destructive" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-destructive mb-2">Erro ao processar pagamento</h3>
+                <p className="text-destructive text-sm mb-4 whitespace-pre-wrap">{checkout.error}</p>
+                <div className="space-y-2">
+                  <p className="text-xs text-destructive/80">
+                    <strong>📋 Checklist rápido:</strong>
+                  </p>
+                  <ul className="text-xs text-destructive/80 space-y-1 ml-4">
+                    <li>• ✅ A função Supabase foi deployada? (<code>supabase functions deploy create-checkout</code>)</li>
+                    <li>• ✅ O token <code>MP_ACCESS_TOKEN</code> está configurado em Supabase Secrets?</li>
+                    <li>• ✅ Em produção, verifique a URL: <code className="text-xs">https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout</code></li>
+                  </ul>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => {
+                      setCheckout({
+                        selectedPlanId: null,
+                        preferenceId: null,
+                        loading: false,
+                        error: null,
+                      });
+                    }}
+                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors"
+                  >
+                    🔄 Tentar novamente
+                  </button>
+                  <a
+                    href="https://raw.githubusercontent.com/seu-repo/main/VERCEL_PRODUCTION_FIX.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors inline-block"
+                  >
+                    📖 Ver guia completo
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
