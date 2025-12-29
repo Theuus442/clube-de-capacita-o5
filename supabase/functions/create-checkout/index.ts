@@ -145,6 +145,7 @@ serve(async (req: Request) => {
         pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
       notification_url: webhookUrl,
+      external_reference: planType,
     }
 
     console.log('📋 Criando preferência para plano:', planType)
