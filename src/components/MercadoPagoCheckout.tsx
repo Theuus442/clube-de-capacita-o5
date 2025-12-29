@@ -80,6 +80,10 @@ const MercadoPagoCheckout = () => {
     try {
       const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+      if (!anonKey) {
+        throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
+      }
+
       console.log('Iniciando requisição para:', apiUrl);
       console.log('Usando proxy:', useProxy);
       console.log('Plano selecionado:', planId);
@@ -87,12 +91,8 @@ const MercadoPagoCheckout = () => {
 
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${anonKey}`,
       };
-
-      // Only add Authorization header if not using proxy (in production)
-      if (!useProxy) {
-        headers['Authorization'] = `Bearer ${anonKey}`;
-      }
 
       let response;
       try {
