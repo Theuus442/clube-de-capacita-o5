@@ -81,26 +81,35 @@ const PreCheckoutRegistration = ({
       console.log('📝 Criando usuário na plataforma...');
 
       const formDataApi = new FormData();
-      formDataApi.append('token', 'ESCOLA_TOKEN'); // Will be replaced by actual token
+      // Get token from environment or use placeholder
+      const escolaToken = import.meta.env.VITE_ESCOLA_TOKEN || '';
+      formDataApi.append('token', escolaToken || 'TOKEN_NOT_CONFIGURED');
       formDataApi.append('nome', formData.fullName);
       formDataApi.append('email', formData.email);
       formDataApi.append('status', 'bloqueado');
       formDataApi.append('sexo', formData.gender);
 
-      const createUserResponse = await fetch(
-        'https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo',
-        {
-          method: 'POST',
-          body: formDataApi,
-        }
-      );
+      try {
+        const createUserResponse = await fetch(
+          'https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo',
+          {
+            method: 'POST',
+            body: formDataApi,
+          }
+        );
 
-      if (!createUserResponse.ok) {
-        throw new Error('Erro ao criar usuário. Tente novamente.');
+        // Log response even if not ok - the user might still be created
+        const userResponse = await createUserResponse.json().catch(() => null);
+        console.log('📋 Resposta da criação de usuário:', {
+          ok: createUserResponse.ok,
+          status: createUserResponse.status,
+          data: userResponse,
+        });
+
+        // Continue even if user creation partially failed - focus on Mercado Pago
+      } catch (userError) {
+        console.warn('⚠️ Aviso ao criar usuário (continuando):', userError);
       }
-
-      const userData = await createUserResponse.json();
-      console.log('✅ Usuário criado:', userData);
 
       // Step 2: Create Mercado Pago preference
       console.log('💳 Criando preferência de pagamento...');
