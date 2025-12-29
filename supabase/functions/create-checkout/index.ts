@@ -162,12 +162,25 @@ serve(async (req: Request) => {
     if (!response.ok) {
       console.error('❌ Erro da API Mercado Pago:')
       console.error('Status:', response.status)
+      console.error('Status Text:', response.statusText)
       console.error('Resposta:', JSON.stringify(responseData, null, 2))
 
-      const errorMessage = responseData?.message || responseData?.error || 'Erro desconhecido da API Mercado Pago'
-      throw new Error(
-        `Erro ao criar preferência (${response.status}): ${errorMessage}`,
-      )
+      const errorMessage = responseData?.message || responseData?.error || 'Erro desconhecido'
+      const errorCode = responseData?.code || response.status
+
+      // Check for specific MP errors
+      if (response.status === 401) {
+        console.error('❌ ERRO 401: Token MP_ACCESS_TOKEN inválido ou expirado')
+        throw new Error('Token Mercado Pago inválido. Verifique se o token está correto em Supabase Secrets')
+      } else if (response.status === 400) {
+        console.error('❌ ERRO 400: Dados inválidos enviados para Mercado Pago')
+        throw new Error(`Dados inválidos: ${errorMessage}`)
+      } else if (response.status >= 500) {
+        console.error('❌ ERRO 5xx: Problema no servidor do Mercado Pago')
+        throw new Error('Servidor Mercado Pago indisponível. Tente novamente')
+      }
+
+      throw new Error(`Erro Mercado Pago (${errorCode}): ${errorMessage}`)
     }
 
     if (!responseData?.id) {
