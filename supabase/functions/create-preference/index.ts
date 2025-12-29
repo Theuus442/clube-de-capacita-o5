@@ -60,6 +60,12 @@ serve(async (req: Request) => {
 
     console.log(`Criando preferência: ${planType} | Webhook: ${webhookUrl}`)
 
+    // Build payer information if provided
+    const payerInfo = {
+      ...(email && { email }),
+      ...(nome && { name: nome }),
+    }
+
     const preferencePayload = {
       items: [
         {
@@ -76,8 +82,16 @@ serve(async (req: Request) => {
         failure: `${cleanBaseUrl}/payment-return?status=failure`,
         pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      external_reference: plan.ref, // Importante para sabermos se é Anual ou Semestral
+      external_reference: `${plan.ref}_${email || 'anonymous'}`, // Include email for better tracking
       notification_url: webhookUrl,
+      // Add payer information if provided
+      ...(Object.keys(payerInfo).length > 0 && { payer: payerInfo }),
+      // Store custom metadata for webhook reference
+      metadata: {
+        email: email || 'not_provided',
+        nome: nome || 'anonymous',
+        sexo: sexo || 'not_provided',
+      },
     }
 
     const response = await fetch(MERCADO_PAGO_API_URL, {
