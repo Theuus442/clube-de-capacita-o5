@@ -57,11 +57,7 @@ const plans: Plan[] = [
   },
 ];
 
-const MercadoPagoCheckout = ({
-  supabaseFunctionUrl = 'URL_DA_FUNCAO_SUPABASE',
-}: {
-  supabaseFunctionUrl?: string;
-} = {}) => {
+const MercadoPagoCheckout = () => {
   const [checkout, setCheckout] = useState<CheckoutState>({
     selectedPlanId: null,
     preferenceId: null,
