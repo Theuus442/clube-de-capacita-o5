@@ -70,21 +70,9 @@ const MercadoPagoCheckout = ({
   });
 
   const handlePlanSelect = async (planId: string) => {
-    // Validate that the Supabase function URL is configured
-    if (
-      !supabaseFunctionUrl ||
-      supabaseFunctionUrl === 'URL_DA_FUNCAO_SUPABASE' ||
-      supabaseFunctionUrl.includes('your-project')
-    ) {
-      setCheckout({
-        selectedPlanId: null,
-        preferenceId: null,
-        loading: false,
-        error:
-          '⚙️ Função Supabase não configurada. Atualize a URL em src/pages/Checkout.tsx com sua função real. Veja MERCADO_PAGO_SETUP.md para mais informações.',
-      });
-      return;
-    }
+    // Use automatic API URL detection
+    const apiUrl = getMercadoPagoApiUrl();
+    const useProxy = isUsingProxy();
 
     setCheckout({
       selectedPlanId: planId,
