@@ -270,19 +270,32 @@ const MercadoPagoCheckout = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-destructive mb-2">Erro ao processar pagamento</h3>
-                <p className="text-destructive text-sm mb-4 whitespace-pre-wrap">{checkout.error}</p>
-                <div className="space-y-2">
-                  <p className="text-xs text-destructive/80">
-                    <strong>📋 Checklist rápido:</strong>
+                <h3 className="font-semibold text-destructive mb-2">❌ Erro ao processar pagamento</h3>
+                <p className="text-destructive text-sm mb-4 whitespace-pre-wrap font-mono text-xs">{checkout.error}</p>
+
+                <div className="bg-white/5 p-3 rounded-lg mb-4 border border-destructive/10">
+                  <p className="text-xs text-destructive/90 font-semibold mb-2">✅ Solução rápida:</p>
+                  <ol className="text-xs text-destructive/80 space-y-1 ml-4 list-decimal">
+                    <li>Acesse: <a href="https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets" target="_blank" rel="noopener noreferrer" className="text-destructive underline hover:text-destructive/80">Supabase Secrets</a></li>
+                    <li>Clique em "New secret"</li>
+                    <li>Name: <code className="bg-black/20 px-1.5 py-0.5 rounded">MP_ACCESS_TOKEN</code></li>
+                    <li>Value: Seu token do <a href="https://www.mercadopago.com.br/developers/panel/credentials" target="_blank" rel="noopener noreferrer" className="text-destructive underline hover:text-destructive/80">Mercado Pago</a></li>
+                    <li>Aguarde 1-2 minutos e tente novamente</li>
+                  </ol>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <p className="text-xs text-destructive/80 font-semibold">
+                    📋 Checklist completo:
                   </p>
                   <ul className="text-xs text-destructive/80 space-y-1 ml-4">
-                    <li>• ✅ A função Supabase foi deployada? (<code>supabase functions deploy create-checkout</code>)</li>
-                    <li>• ✅ O token <code>MP_ACCESS_TOKEN</code> está configurado em Supabase Secrets?</li>
-                    <li>• ✅ Em produção, verifique a URL: <code className="text-xs">https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout</code></li>
+                    <li>☑️ MP_ACCESS_TOKEN configurado em Supabase Secrets</li>
+                    <li>☑️ Função deployada: <code className="bg-black/20 px-1 py-0.5 rounded">supabase functions deploy create-checkout</code></li>
+                    <li>☑️ URL correta: <code className="bg-black/20 px-1 py-0.5 rounded text-xs">https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout</code></li>
                   </ul>
                 </div>
-                <div className="mt-4 flex flex-wrap gap-2">
+
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => {
                       setCheckout({
@@ -292,17 +305,17 @@ const MercadoPagoCheckout = () => {
                         error: null,
                       });
                     }}
-                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors"
+                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors font-medium"
                   >
                     🔄 Tentar novamente
                   </button>
                   <a
-                    href="https://raw.githubusercontent.com/seu-repo/main/VERCEL_PRODUCTION_FIX.md"
+                    href="https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors inline-block"
+                    className="text-xs bg-destructive/20 hover:bg-destructive/30 text-destructive px-3 py-2 rounded transition-colors inline-block font-medium"
                   >
-                    📖 Ver guia completo
+                    ⚙️ Ir para Supabase Secrets
                   </a>
                 </div>
               </div>
