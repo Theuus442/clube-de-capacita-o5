@@ -72,11 +72,12 @@ serve(async (req) => {
 
     console.log(`✅ [WEBHOOK] Pagamento em estado processável: ${paymentData.status}`)
 
-    console.log(`✅ Pagamento aprovado! ID: ${dataId}`)
+    console.log(`✅ [WEBHOOK] Pagamento em estado processável! ID: ${dataId}`)
 
     // 2. Prepara os dados do aluno
-    const email = paymentData.payer.email
-    const nome = paymentData.payer.first_name
+    console.log(`📍 [WEBHOOK] Extraindo dados do payer...`)
+    const email = paymentData.payer?.email
+    const nome = paymentData.payer?.first_name
        ? `${paymentData.payer.first_name} ${paymentData.payer.last_name || ''}`.trim()
        : 'Novo Aluno'
 
@@ -86,11 +87,11 @@ serve(async (req) => {
 
     const plano = paymentData.external_reference || 'MENSAL'
 
-    console.log(`📋 Dados do pagamento:`)
-    console.log(`  - Email: ${email}`)
-    console.log(`  - Nome: ${nome}`)
-    console.log(`  - Gênero: ${sexo}`)
-    console.log(`  - Plano: ${plano}`)
+    console.log(`✅ [WEBHOOK] Dados do pagamento extraídos:`)
+    console.log(`  ├─ Email: ${email}`)
+    console.log(`  ├─ Nome: ${nome}`)
+    console.log(`  ├─ Gênero: ${sexo}`)
+    console.log(`  └─ Plano: ${plano}`)
     const hoje = new Date()
     const dataFinal = new Date()
     
