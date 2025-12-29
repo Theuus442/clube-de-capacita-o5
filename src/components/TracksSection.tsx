@@ -43,7 +43,7 @@ const tracks = [
   {
     icon: <Share2 className="w-6 h-6" />,
     title: "Mídias Digitais",
-    courses: ["Marketing Digital", "Instagram para Vendas", "Mídias Digitais", "YouTube", "Canva", "Operador de Podcast", "WhatsApp Business"],
+    courses: ["Marketing Digital", "Instagram para Vendas", "Mídias Digitais", "YouTube", "Canva", "Operador de Podcast", "Photoshop CC", "Edição de Vídeo Premiere"],
     color: "from-red-500 to-red-600",
   },
 ];

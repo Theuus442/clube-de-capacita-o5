@@ -65,8 +65,8 @@ const PaymentReturn = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    onClick={() => window.open('https://escolathreynnare.com.br', '_blank')}
+                  <Button
+                    onClick={() => window.location.href = 'https://online.threynnare.com.br/metodo/index.php'}
                     size="lg"
                     className="min-w-48"
                   >

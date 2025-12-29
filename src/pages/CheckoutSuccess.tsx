@@ -95,7 +95,7 @@ const CheckoutSuccessPage = () => {
                 Voltar à Página Inicial
               </Button>
               <Button
-                onClick={() => window.open('https://seu-dominio.com', '_blank')}
+                onClick={() => window.location.href = 'https://online.threynnare.com.br/metodo/index.php'}
                 size="lg"
                 className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg"
               >
