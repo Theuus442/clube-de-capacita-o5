@@ -56,6 +56,18 @@ Para fazer o deployment e ativar o checkout:
    - ✅ Já atualizei em `src/pages/Checkout.tsx`
    - URL: `https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference`
 
+5. **Configure as URLs de Retorno no Mercado Pago**
+   - Acesse o painel Mercado Pago → Configurações → URLs de Retorno
+   - Configure as URLs de retorno conforme abaixo (subepita o domínio pela sua URL real):
+
+   **Para Produção:**
+   - ✅ URL de retorno (Sucesso): `https://seu-dominio.com.br/payment-return?status=approved`
+   - ✅ URL de retorno (Pendência): `https://seu-dominio.com.br/payment-return?status=pending`
+   - ✅ URL de retorno (Falha): `https://seu-dominio.com.br/payment-return?status=failure`
+
+   **Para Testes (localhost):**
+   - Use o ngrok ou similar para expor localhost: `https://seu-ngrok-url.ngrok.io/payment-return?status=approved`
+
 **📖 Veja o guia completo em: `SUPABASE_DEPLOYMENT_GUIDE.md`**
 
 ## 📱 Usando o Componente
@@ -130,6 +142,60 @@ const plans: Plan[] = [
 - [Documentação Mercado Pago SDK React](https://www.mercadopago.com.br/developers/pt/docs)
 - [Documentação Supabase Edge Functions](https://supabase.com/docs/guides/functions)
 - [API Preferences Mercado Pago](https://www.mercadopago.com.br/developers/pt/reference/preferences/_checkout_preferences/post)
+
+## 🔄 Componente de Retorno de Pagamento
+
+Criamos um componente robusto para gerenciar os retornos do Mercado Pago com diferentes estados:
+
+### Arquivo: `src/pages/PaymentReturn.tsx`
+
+Este componente lida automaticamente com 3 status enviados pelo Mercado Pago:
+
+#### 1️⃣ Status: `approved` ✅
+- Ícone verde de sucesso com animação
+- Mensagem: "Pagamento Confirmado! 🎉"
+- **Aviso Importante**: "Enviamos seu Login e Senha para o seu E-mail. Verifique sua caixa de entrada e pasta de Spam agora mesmo."
+- Botões: "Ir para Área do Aluno" (link externo) e "Voltar ao Início"
+
+#### 2️⃣ Status: `pending` ⏱️
+- Ícone amarelo de relógio com rotação
+- Mensagem: "Pagamento em Processamento"
+- Texto: "Estamos verificando seu pagamento. Assim que for confirmado, você receberá seu acesso por e-mail."
+- Aviso sobre o tempo de processamento
+- Botão: "Voltar ao Início"
+
+#### 3️⃣ Status: `failure` ❌
+- Ícone vermelho de erro
+- Mensagem: "Algo deu errado"
+- Texto: "Seu pagamento não foi processado. Por favor, verifique seus dados e tente novamente."
+- Aviso sobre suporte
+- Botões: "Tentar Novamente" (volta ao checkout) e "Voltar ao Início"
+
+### Como Funciona
+
+O componente:
+1. Lê o parâmetro `status` da URL usando `useSearchParams()`
+2. Valida se o status é um dos três permitidos
+3. Renderiza a interface correspondente ao status
+4. Define meta tags (SEO) para cada estado
+5. Oferece botões de ação contextualizados
+
+### Uso
+
+A rota já está registrada em `src/App.tsx`:
+```tsx
+<Route path="/payment-return" element={<PaymentReturn />} />
+```
+
+Acesse com: `https://seu-dominio.com.br/payment-return?status=approved`
+
+### Personalização
+
+Para alterar a URL da área do aluno (link externo), edite `src/pages/PaymentReturn.tsx`:
+
+```tsx
+onClick={() => window.open('https://sua-url-escolar.com.br', '_blank')}
+```
 
 ## ❓ Troubleshooting
 

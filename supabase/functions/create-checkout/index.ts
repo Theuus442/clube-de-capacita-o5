@@ -1,10 +1,11 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const MERCADO_PAGO_API_URL = 'https://api.mercadopago.com/checkout/preferences'
-const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MERCADO_PAGO_ACCESS_TOKEN')
+const MERCADO_PAGO_ACCESS_TOKEN = Deno.env.get('MP_ACCESS_TOKEN')
 
 interface RequestBody {
   planType: 'anual' | 'semestral'
+  redirectUrl?: string
 }
 
 const planConfig = {
@@ -36,7 +37,7 @@ serve(async (req: Request) => {
 
   try {
     // Parse request body
-    const { planType }: RequestBody = await req.json()
+    const { planType, redirectUrl }: RequestBody = await req.json()
 
     // Validate plan type
     if (!planType || !['anual', 'semestral'].includes(planType)) {
@@ -52,12 +53,29 @@ serve(async (req: Request) => {
       )
     }
 
+    // Get base URL (from client or fallback)
+    const baseUrl = redirectUrl || new URL(req.url).origin
+
+    // Validate URL format
+    if (!baseUrl.startsWith('http')) {
+      return new Response(
+        JSON.stringify({ error: 'URL de redirecionamento inválida' }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
+      )
+    }
+
     // Validate access token
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
-      console.error('MERCADO_PAGO_ACCESS_TOKEN não configurado')
+      console.error('MP_ACCESS_TOKEN não configurado')
       return new Response(
         JSON.stringify({
-          error: 'Erro na configuração do servidor. Token do Mercado Pago não encontrado.',
+          error: 'Erro na configuração do servidor. Token do Mercado Pago (MP_ACCESS_TOKEN) não encontrado.',
         }),
         {
           status: 500,
@@ -70,6 +88,9 @@ serve(async (req: Request) => {
     }
 
     const plan = planConfig[planType]
+
+    // Ensure baseUrl has no trailing slash
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
 
     // Create preference payload
     const preferencePayload = {
@@ -84,11 +105,11 @@ serve(async (req: Request) => {
       ],
       auto_return: 'approved',
       back_urls: {
-        success: `${new URL(req.url).origin}/checkout-success`,
-        failure: `${new URL(req.url).origin}/checkout-failure`,
-        pending: `${new URL(req.url).origin}/checkout-pending`,
+        success: `${cleanBaseUrl}/payment-return?status=approved`,
+        failure: `${cleanBaseUrl}/payment-return?status=failure`,
+        pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      notification_url: `${new URL(req.url).origin}/api/webhooks/mercado-pago`,
+      notification_url: `${cleanBaseUrl}/api/webhooks/mercado-pago`,
     }
 
     console.log('Criando preferência para plano:', planType)

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Loader, Crown, Zap, X, Lock, Target } from 'lucide-react';
+import { getMercadoPagoApiUrl, isUsingProxy } from '@/lib/api-config';
 
 interface Plan {
   id: string;
@@ -56,11 +57,7 @@ const plans: Plan[] = [
   },
 ];
 
-const MercadoPagoCheckout = ({
-  supabaseFunctionUrl = 'URL_DA_FUNCAO_SUPABASE',
-}: {
-  supabaseFunctionUrl?: string;
-} = {}) => {
+const MercadoPagoCheckout = () => {
   const [checkout, setCheckout] = useState<CheckoutState>({
     selectedPlanId: null,
     preferenceId: null,
@@ -69,21 +66,9 @@ const MercadoPagoCheckout = ({
   });
 
   const handlePlanSelect = async (planId: string) => {
-    // Validate that the Supabase function URL is configured
-    if (
-      !supabaseFunctionUrl ||
-      supabaseFunctionUrl === 'URL_DA_FUNCAO_SUPABASE' ||
-      supabaseFunctionUrl.includes('your-project')
-    ) {
-      setCheckout({
-        selectedPlanId: null,
-        preferenceId: null,
-        loading: false,
-        error:
-          '⚙️ Função Supabase não configurada. Atualize a URL em src/pages/Checkout.tsx com sua função real. Veja MERCADO_PAGO_SETUP.md para mais informações.',
-      });
-      return;
-    }
+    // Use automatic API URL detection
+    const apiUrl = getMercadoPagoApiUrl();
+    const useProxy = isUsingProxy();
 
     setCheckout({
       selectedPlanId: planId,
@@ -99,16 +84,38 @@ const MercadoPagoCheckout = ({
         throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
       }
 
-      const response = await fetch(supabaseFunctionUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${anonKey}`,
-        },
-        body: JSON.stringify({
-          planType: planId,
-        }),
-      });
+      console.log('Iniciando requisição para:', apiUrl);
+      console.log('Usando proxy:', useProxy);
+      console.log('Plano selecionado:', planId);
+      console.log('Redirect URL:', window.location.origin);
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${anonKey}`,
+      };
+
+      let response;
+      try {
+        response = await fetch(apiUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            planType: planId,
+            redirectUrl: window.location.origin,
+          }),
+        });
+      } catch (fetchErr) {
+        console.error('Erro ao fazer fetch:', fetchErr);
+        throw new Error(
+          `Erro de conexão com a função Mercado Pago. Verifique:\n` +
+          `1. A função foi deployada? (supabase functions deploy create-checkout)\n` +
+          `2. O token MP_ACCESS_TOKEN está configurado no Supabase?\n` +
+          `3. Em produção, verifique a URL: ${apiUrl}\n\n` +
+          `Erro técnico: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
+        );
+      }
+
+      console.log('Resposta recebida com status:', response.status);
 
       if (!response.ok) {
         let errorDetails = '';
@@ -124,7 +131,7 @@ const MercadoPagoCheckout = ({
           details: errorDetails,
         });
         throw new Error(
-          `Erro da função: ${response.status} ${response.statusText}. Detalhes: ${errorDetails}`
+          `Erro da função (${response.status}): ${errorDetails}`
         );
       }
 
@@ -153,7 +160,7 @@ const MercadoPagoCheckout = ({
         errorMessage = JSON.stringify(err);
       }
 
-      console.error('Erro no checkout:', err);
+      console.error('Erro completo no checkout:', err);
 
       setCheckout({
         selectedPlanId: null,
@@ -234,7 +241,15 @@ const MercadoPagoCheckout = ({
 
       {checkout.error && (
         <div className="max-w-2xl mx-auto mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <p className="text-destructive text-sm">{checkout.error}</p>
+          <p className="text-destructive text-sm whitespace-pre-wrap">{checkout.error}</p>
+          <a
+            href="https://github.com/seu-repo/blob/main/SUPABASE_FUNCTION_DEBUG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-destructive text-xs underline mt-2 inline-block hover:text-destructive/80"
+          >
+            📖 Ver guia de debug
+          </a>
         </div>
       )}
 

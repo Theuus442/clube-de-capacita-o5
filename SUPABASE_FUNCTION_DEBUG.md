@@ -1,0 +1,154 @@
+# 🔧 Guia de Debug: Erro "Failed to Fetch" na Função Supabase
+
+Se você está recebendo o erro **"TypeError: Failed to fetch"**, siga este checklist:
+
+## ✅ Passo 1: Verificar se a Função Foi Deployada
+
+### Via Terminal:
+```bash
+# Verificar se a função existe no Supabase
+supabase functions list
+
+# Você deve ver algo como:
+# create-checkout  (deployed)
+```
+
+### Via Painel Supabase:
+1. Acesse: https://supabase.com/dashboard
+2. Projeto: `zajyeykcepcrlngmdpvf`
+3. Functions → Veja se `create-checkout` aparece lá
+4. Se não aparecer ou precisar atualizar, faça o deploy:
+
+```bash
+supabase login
+supabase link --project-ref zajyeykcepcrlngmdpvf
+supabase functions deploy create-checkout
+```
+
+---
+
+## ✅ Passo 2: Verificar o Token do Mercado Pago
+
+### Via Painel Supabase:
+1. Project Settings → Secrets
+2. Procure por `MP_ACCESS_TOKEN`
+3. Se não existir, **CRIE AGORA**:
+   - Name: `MP_ACCESS_TOKEN`
+   - Value: seu token de **PRODUÇÃO** do Mercado Pago
+   
+### Obter o Token:
+1. Acesse: https://www.mercadopago.com.br/developers/panel/
+2. Credenciais → Access Token de **Produção**
+3. Copie e cole no Supabase
+
+**⚠️ Importante:** Use o token de **PRODUÇÃO**, não de teste!
+
+---
+
+## ✅ Passo 3: Testar a Função Manualmente
+
+### Via cURL:
+```bash
+curl -X POST https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_ANON_KEY" \
+  -d '{"planType":"anual","redirectUrl":"http://localhost:3000"}'
+```
+
+**Onde obter `SEU_ANON_KEY`:**
+- Painel Supabase → Project Settings → API Keys → Anon Key
+
+### Resposta Esperada (Sucesso):
+```json
+{"preferenceId":"123456789"}
+```
+
+### Resposta de Erro (Verifica se o Token está Configurado):
+```json
+{"error":"Erro na configuração do servidor. Token do Mercado Pago não encontrado."}
+```
+
+---
+
+## ✅ Passo 4: Verificar CORS
+
+A função já tem CORS configurado para aceitar requisições de qualquer origem:
+
+```typescript
+'Access-Control-Allow-Origin': '*'
+```
+
+Mas se ainda assim receber erro, verifique o console do navegador (F12):
+- Network tab → create-preference
+- Veja se há erro de CORS (Cross-Origin)
+
+---
+
+## ✅ Passo 5: Verificar Logs da Função
+
+### Via Painel Supabase:
+1. Functions → create-checkout
+2. Clique em "Logs"
+3. Veja os logs da última execução
+4. Procure por erros como:
+   - `MP_ACCESS_TOKEN não configurado`
+   - `Tipo de plano inválido`
+   - Erros da API do Mercado Pago
+
+---
+
+## ✅ Passo 6: Verificar URL da Função
+
+A URL agora é configurada automaticamente em `src/lib/api-config.ts`:
+
+```typescript
+// Em desenvolvimento: /api/mercado-pago (proxy Vite)
+// Em produção: https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout
+```
+
+⚠️ **Verifique:**
+- Você está usando a função correta? `create-checkout` (não `create-preference`)
+- A função `create-checkout` está deployada no Supabase?
+- O token `MP_ACCESS_TOKEN` está configurado?
+
+---
+
+## 🐛 Erros Comuns e Soluções
+
+### Erro: "Failed to fetch"
+**Causa:** Função não deployada ou token não configurado
+**Solução:** Verifique se `create-checkout` foi deployada. Rode: `supabase functions deploy create-checkout`
+
+### Erro: "NOT_FOUND" (404)
+**Causa:** A função `create-checkout` não foi encontrada no Supabase
+**Solução:** Deploy da função: `supabase functions deploy create-checkout`
+
+### Erro: "URL de redirecionamento inválida"
+**Causa:** O `redirectUrl` não começa com `http`
+**Solução:** Verifique se `window.location.origin` está funcionando
+
+### Erro: "Tipo de plano inválido"
+**Causa:** O plano enviado não é `anual` ou `semestral`
+**Solução:** Verifique em `src/components/MercadoPagoCheckout.tsx` se os planos estão corretos
+
+### Erro: "Erro ao criar preferência: 401"
+**Causa:** Token do Mercado Pago (MP_ACCESS_TOKEN) inválido ou expirado
+**Solução:** Regenere um novo token de PRODUÇÃO no Mercado Pago e atualize no Supabase Secrets
+
+---
+
+## 📝 Checklist Final
+
+- [ ] Função `create-checkout` está deployada
+- [ ] `MP_ACCESS_TOKEN` está configurado no Supabase Secrets
+- [ ] Token é de **PRODUÇÃO** (não teste)
+- [ ] Testei o fetch via cURL e funcionou
+- [ ] Verificei os logs da função no painel Supabase
+- [ ] Acionei um plano no checkout e viu o formulário do Mercado Pago
+
+Se ainda assim não funcionar, compartilhe:
+1. O erro completo do console (F12)
+2. A resposta do teste cURL
+3. Os logs da função Supabase
+
+Estaremos prontos para ajudar! 🚀
