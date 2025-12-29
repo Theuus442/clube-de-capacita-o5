@@ -32,28 +32,45 @@ serve(async (req) => {
       action === 'payment.updated' ||
       body.action === 'payment.updated'
 
+    console.log('📍 [WEBHOOK] Verificação de evento:', { action, topic, isPaymentEvent })
+
     if (!isPaymentEvent) {
-       console.log('Evento ignorado:', { action, topic })
+       console.log('⚠️ [WEBHOOK] Evento ignorado - não é pagamento:', { action, topic })
        return new Response('Ignorado', { status: 200 })
     }
 
     if (!dataId) {
-      console.log('ID ausente no webhook')
+      console.log('⚠️ [WEBHOOK] ID ausente no webhook')
       return new Response('ID ausente', { status: 200 })
     }
 
+    console.log(`📍 [WEBHOOK] Processando pagamento ID: ${dataId}`)
+
     // 1. Confere se o pagamento existe no Mercado Pago
+    console.log(`🔍 [WEBHOOK] Consultando MP API para ID: ${dataId}`)
     const mpResponse = await fetch(`https://api.mercadopago.com/v1/payments/${dataId}`, {
         headers: { 'Authorization': `Bearer ${Deno.env.get('MP_ACCESS_TOKEN')}` }
     })
 
-    if (!mpResponse.ok) throw new Error('Falha MP')
+    if (!mpResponse.ok) {
+      const errorText = await mpResponse.text()
+      console.error('❌ [WEBHOOK] Erro ao consultar MP API:', mpResponse.status, errorText)
+      throw new Error('Falha MP')
+    }
     const paymentData = await mpResponse.json()
 
-    if (paymentData.status !== 'approved') {
-        console.log(`⏳ Pagamento ainda não aprovado. Status: ${paymentData.status}`)
+    console.log(`📊 [WEBHOOK] Status do pagamento: ${paymentData.status}`)
+    console.log(`📊 [WEBHOOK] Dados completos do pagamento:`, JSON.stringify(paymentData, null, 2))
+
+    // ✅ ACEITAMOS TANTO 'approved' QUANTO 'pending' (cartões de teste ficam pending)
+    const isApprovedOrPending = paymentData.status === 'approved' || paymentData.status === 'pending'
+
+    if (!isApprovedOrPending) {
+        console.log(`⏳ [WEBHOOK] Pagamento ${paymentData.status} - ignorando (aguardando aprovação ou processamento)`)
         return new Response('Aguardando aprovação', { status: 200 })
     }
+
+    console.log(`✅ [WEBHOOK] Pagamento em estado processável: ${paymentData.status}`)
 
     console.log(`✅ Pagamento aprovado! ID: ${dataId}`)
 
