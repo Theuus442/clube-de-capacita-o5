@@ -89,6 +89,9 @@ serve(async (req: Request) => {
 
     const plan = planConfig[planType]
 
+    // Ensure baseUrl has no trailing slash
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
+
     // Create preference payload
     const preferencePayload = {
       items: [
@@ -102,11 +105,11 @@ serve(async (req: Request) => {
       ],
       auto_return: 'approved',
       back_urls: {
-        success: `${new URL(req.url).origin}/checkout-success`,
-        failure: `${new URL(req.url).origin}/checkout-failure`,
-        pending: `${new URL(req.url).origin}/checkout-pending`,
+        success: `${cleanBaseUrl}/payment-return?status=approved`,
+        failure: `${cleanBaseUrl}/payment-return?status=failure`,
+        pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      notification_url: `${new URL(req.url).origin}/api/webhooks/mercado-pago`,
+      notification_url: `${cleanBaseUrl}/api/webhooks/mercado-pago`,
     }
 
     console.log('Criando preferência para plano:', planType)
