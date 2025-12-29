@@ -49,7 +49,7 @@ supabase functions deploy create-checkout
 
 ### Via cURL:
 ```bash
-curl -X POST https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference \
+curl -X POST https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_ANON_KEY" \
   -d '{"planType":"anual","redirectUrl":"http://localhost:3000"}'
