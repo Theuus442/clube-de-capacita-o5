@@ -116,7 +116,8 @@ serve(async (req: Request) => {
       notification_url: webhookUrl,
     }
 
-    console.log('Criando preferência para plano:', planType)
+    console.log('📋 Criando preferência para plano:', planType)
+    console.log('🔔 Webhook URL:', webhookUrl)
 
     // Create preference in Mercado Pago
     const response = await fetch(MERCADO_PAGO_API_URL, {
