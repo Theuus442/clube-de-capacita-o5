@@ -88,6 +88,15 @@ const PreCheckoutRegistration = ({
       formDataApi.append('email', formData.email);
       formDataApi.append('status', 'bloqueado');
       formDataApi.append('sexo', formData.gender);
+      formDataApi.append('planType', planType); // Include plan type in user creation
+
+      console.log('📋 Dados enviados para criação de usuário:', {
+        nome: formData.fullName,
+        email: formData.email,
+        sexo: formData.gender,
+        planType: planType,
+        status: 'bloqueado',
+      });
 
       try {
         const createUserResponse = await fetch(
@@ -106,6 +115,10 @@ const PreCheckoutRegistration = ({
           data: userResponse,
         });
 
+        if (!createUserResponse.ok && createUserResponse.status === 403) {
+          console.warn('⚠️ Token inválido na API da escola. Continuando com pagamento...');
+        }
+
         // Continue even if user creation partially failed - focus on Mercado Pago
       } catch (userError) {
         console.warn('⚠️ Aviso ao criar usuário (continuando):', userError);
@@ -113,6 +126,12 @@ const PreCheckoutRegistration = ({
 
       // Step 2: Create Mercado Pago preference
       console.log('💳 Criando preferência de pagamento...');
+      console.log('📊 Dados do pagamento:', {
+        planType: planType,
+        email: formData.email,
+        nome: formData.fullName,
+        sexo: formData.gender,
+      });
 
       const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
       const apiUrl = import.meta.env.DEV
@@ -130,6 +149,7 @@ const PreCheckoutRegistration = ({
           redirectUrl: window.location.origin,
           email: formData.email,
           nome: formData.fullName,
+          sexo: formData.gender,
         }),
       });
 
