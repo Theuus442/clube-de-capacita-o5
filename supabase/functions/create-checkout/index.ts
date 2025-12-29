@@ -31,8 +31,23 @@ serve(async (req: Request) => {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400',
       },
     })
+  }
+
+  // Only accept POST
+  if (req.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Método não permitido. Use POST.' }),
+      {
+        status: 405,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      },
+    )
   }
 
   try {
@@ -72,20 +87,26 @@ serve(async (req: Request) => {
 
     // Validate access token
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
-      console.error('❌ MP_ACCESS_TOKEN não configurado em Supabase Secrets')
-      console.error('Para configurar, acesse:')
-      console.error('https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets')
+      console.error('❌ CRITICAL: MP_ACCESS_TOKEN não configurado em Supabase Secrets')
+      console.error('📍 Projeto: zajyeykcepcrlngmdpvf')
+      console.error('🔗 Para configurar: https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets')
       console.error('')
       console.error('Passos:')
-      console.error('1. Acesse: https://www.mercadopago.com.br/developers/panel/credentials')
-      console.error('2. Selecione MODO TESTE (switch no topo)')
-      console.error('3. Copie o "Access Token" da seção teste (começa com TEST-)')
-      console.error('4. Em Supabase, adicione novo secret: MP_ACCESS_TOKEN = {seu_token}')
+      console.error('1. Acesse Supabase Dashboard → Settings → Secrets')
+      console.error('2. Clique em "New secret"')
+      console.error('3. Name: MP_ACCESS_TOKEN')
+      console.error('4. Value: Seu token do Mercado Pago')
+      console.error('5. Save e aguarde 1-2 minutos')
+      console.error('')
+      console.error('Para obter o token:')
+      console.error('- Acesse: https://www.mercadopago.com.br/developers/panel/credentials')
+      console.error('- Cópia o token (TEST-xxx ou APP_USR-xxx)')
 
       return new Response(
         JSON.stringify({
-          error: 'Erro na configuração do servidor. Token do Mercado Pago (MP_ACCESS_TOKEN) não encontrado.',
-          instructions: 'Acesse https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets e configure MP_ACCESS_TOKEN com seu token de teste do Mercado Pago',
+          error: 'Erro de Configuração: Token Mercado Pago não encontrado',
+          code: 'MISSING_MP_TOKEN',
+          instructions: 'Configure MP_ACCESS_TOKEN em https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets',
         }),
         {
           status: 500,
@@ -141,12 +162,25 @@ serve(async (req: Request) => {
     if (!response.ok) {
       console.error('❌ Erro da API Mercado Pago:')
       console.error('Status:', response.status)
+      console.error('Status Text:', response.statusText)
       console.error('Resposta:', JSON.stringify(responseData, null, 2))
 
-      const errorMessage = responseData?.message || responseData?.error || 'Erro desconhecido da API Mercado Pago'
-      throw new Error(
-        `Erro ao criar preferência (${response.status}): ${errorMessage}`,
-      )
+      const errorMessage = responseData?.message || responseData?.error || 'Erro desconhecido'
+      const errorCode = responseData?.code || response.status
+
+      // Check for specific MP errors
+      if (response.status === 401) {
+        console.error('❌ ERRO 401: Token MP_ACCESS_TOKEN inválido ou expirado')
+        throw new Error('Token Mercado Pago inválido. Verifique se o token está correto em Supabase Secrets')
+      } else if (response.status === 400) {
+        console.error('❌ ERRO 400: Dados inválidos enviados para Mercado Pago')
+        throw new Error(`Dados inválidos: ${errorMessage}`)
+      } else if (response.status >= 500) {
+        console.error('❌ ERRO 5xx: Problema no servidor do Mercado Pago')
+        throw new Error('Servidor Mercado Pago indisponível. Tente novamente')
+      }
+
+      throw new Error(`Erro Mercado Pago (${errorCode}): ${errorMessage}`)
     }
 
     if (!responseData?.id) {
@@ -165,12 +199,15 @@ serve(async (req: Request) => {
     })
   } catch (error) {
     console.error('❌ Erro completo na função:', error)
+
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const isTokenError = errorMessage.includes('Token') || errorMessage.includes('401')
+
     return new Response(
       JSON.stringify({
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Erro interno do servidor',
+        error: errorMessage,
+        type: isTokenError ? 'TOKEN_ERROR' : 'UNKNOWN_ERROR',
+        timestamp: new Date().toISOString(),
       }),
       {
         status: 500,
