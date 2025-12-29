@@ -81,12 +81,14 @@ serve(async (req) => {
 
     // 3. Monta o pacote de envio (FormData é o segredo aqui)
     const formData = new FormData()
-    formData.append('token', tokenEscola) 
+    formData.append('token', tokenEscola)
     formData.append('nome', nome)
     formData.append('email', email)
+    formData.append('sexo', sexo)
     formData.append('status', 'ativo')
     formData.append('datafinal', dataFormatada)
-    formData.append('senha', Math.random().toString(36).slice(-8))
+    formData.append('planType', plano) // Include plan type
+    formData.append('senha', Math.random().toString(36).slice(-8)) // Auto-generated password
 
     // 4. URL DA VITÓRIA (Com index.php e rota correta)
     const urlEscola = "https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo"
