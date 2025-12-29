@@ -40,7 +40,10 @@ serve(async (req: Request) => {
 
     const { planType, redirectUrl, email, nome, sexo } = await req.json()
 
-    if (!planType || !planConfig[planType]) {
+    // Se não informar o plano, assume 'anual' ou dá erro
+    const type = planType || 'anual';
+
+    if (!planConfig[type]) {
       return new Response(JSON.stringify({ error: 'Tipo de plano inválido' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -48,9 +51,9 @@ serve(async (req: Request) => {
     }
 
     // Log received data for debugging
-    console.log('📩 Dados recebidos:', { planType, email, nome, sexo })
+    console.log(`Criando preferência: ${type} para ${email} | Sexo: ${sexo}`)
 
-    const plan = planConfig[planType]
+    const plan = planConfig[type]
     const baseUrl = redirectUrl || new URL(req.url).origin
     const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
 
@@ -58,17 +61,7 @@ serve(async (req: Request) => {
     const supabaseProjectId = Deno.env.get('SUPABASE_PROJECT_ID') || 'zajyeykcepcrlngmdpvf'
     const webhookUrl = `https://${supabaseProjectId}.supabase.co/functions/v1/mp-webhook`
 
-    console.log(`🎯 Criando preferência para plano: ${planType}`)
-    console.log(`👤 Aluno: ${nome} (${email})`)
-    console.log(`⚖️ Gênero: ${sexo}`)
-    console.log(`🔔 Webhook: ${webhookUrl}`)
-    console.log(`💰 Valor: R$ ${plan.price}`)
-
-    // Build payer information if provided
-    const payerInfo = {
-      ...(email && { email }),
-      ...(nome && { name: nome }),
-    }
+    console.log(`Webhook URL: ${webhookUrl}`)
 
     // 💡 IMPORTANTE: Os dados do usuário (email, nome, sexo) são armazenados
     // nos metadados da preferência. O webhook usará esses dados para criar
@@ -85,23 +78,25 @@ serve(async (req: Request) => {
           currency_id: plan.currency_id,
         },
       ],
+      payer: {
+        email: email, // Email real do aluno
+        name: nome    // Nome real do aluno
+      },
+      // ✅ AQUI ESTÁ O SEGREDO: Enviamos os dados para o Webhook usar depois
+      metadata: {
+        nome_aluno: nome,
+        email_aluno: email,
+        sexo_aluno: sexo,
+        plano_escolhido: type
+      },
       auto_return: 'approved',
       back_urls: {
         success: `${cleanBaseUrl}/payment-return?status=approved`,
         failure: `${cleanBaseUrl}/payment-return?status=failure`,
         pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      external_reference: `${plan.ref}_${email || 'anonymous'}`, // Include email for better tracking
+      external_reference: plan.ref,
       notification_url: webhookUrl,
-      // Add payer information if provided
-      ...(Object.keys(payerInfo).length > 0 && { payer: payerInfo }),
-      // Store custom metadata for webhook reference
-      // ⚠️ O webhook usará isso para criar o usuário na escola!
-      metadata: {
-        email: email || 'not_provided',
-        nome: nome || 'anonymous',
-        sexo: sexo || 'not_provided',
-      },
     }
 
     const response = await fetch(MERCADO_PAGO_API_URL, {

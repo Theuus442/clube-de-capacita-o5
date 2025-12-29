@@ -1,121 +1,156 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
-console.log("Webhook MP -> Escola (Versão FINAL) 🚀")
+console.log("🚀 MP Webhook iniciado - Versão com novo metadata")
 
 serve(async (req) => {
-  if (req.method !== 'POST') {
-    return new Response('Method Not Allowed', { status: 405 })
-  }
-
   try {
+    // 1. CONFIGURAÇÕES DA ESCOLA (usar Deno.env para token por segurança)
+    const BASE_URL = "https://estudanteead.com/oficial/api/v2/"
+    const TOKEN_ESCOLA = Deno.env.get('ESCOLA_TOKEN') || '' // ✅ Seguro: vem do .env
+    const MP_ACCESS_TOKEN = Deno.env.get('MP_ACCESS_TOKEN')
+    
+    if (!MP_ACCESS_TOKEN) {
+      console.error('❌ [WEBHOOK] MP_ACCESS_TOKEN não configurado')
+      throw new Error('MP_ACCESS_TOKEN não configurado')
+    }
+
+    if (!TOKEN_ESCOLA) {
+      console.error('❌ [WEBHOOK] ESCOLA_TOKEN não configurado')
+      throw new Error('ESCOLA_TOKEN não configurado')
+    }
+    
+    // 2. Validações do Webhook
+    console.log(`📍 [WEBHOOK] URL completa: ${req.url}`)
     const url = new URL(req.url)
-    const body = await req.json().catch(() => ({}))
-    const dataId = body.data?.id || body.id || url.searchParams.get('id')
+    const topic = url.searchParams.get('topic') || url.searchParams.get('type')
+    const id = url.searchParams.get('id') || url.searchParams.get('data.id')
 
-    console.log('Webhook recebido:', JSON.stringify(body, null, 2))
+    console.log(`📍 [WEBHOOK] Topic: ${topic}, ID: ${id}`)
 
-    // Filtro para ignorar avisos repetidos ou testes de conexão
-    const action = body.action || body.type
-    const topic = body.topic || body.type
-
-    // Aceita eventos de pagamento (várias variações possíveis)
-    const isPaymentEvent =
-      action === 'payment.created' ||
-      topic === 'payment' ||
-      action === 'payment.updated' ||
-      body.action === 'payment.updated'
-
-    if (!isPaymentEvent) {
-       console.log('Evento ignorado:', { action, topic })
-       return new Response('Ignorado', { status: 200 })
+    if (topic !== 'payment') {
+      console.log(`⚠️ [WEBHOOK] Topic não é 'payment'. Ignorando...`)
+      return new Response(JSON.stringify({ message: "Ignorado" }), { status: 200 })
     }
 
-    if (!dataId) {
-      console.log('ID ausente no webhook')
-      return new Response('ID ausente', { status: 200 })
+    if (!id) {
+      console.error('❌ [WEBHOOK] ID do pagamento não encontrado')
+      return new Response(JSON.stringify({ message: "ID ausente" }), { status: 400 })
     }
 
-    // 1. Confere se o pagamento existe no Mercado Pago
-    const mpResponse = await fetch(`https://api.mercadopago.com/v1/payments/${dataId}`, {
-        headers: { 'Authorization': `Bearer ${Deno.env.get('MP_ACCESS_TOKEN')}` }
+    // 3. Busca o pagamento no Mercado Pago
+    console.log(`🔍 [WEBHOOK] Consultando pagamento ${id} no Mercado Pago...`)
+    const mpResponse = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
+      headers: { 'Authorization': `Bearer ${MP_ACCESS_TOKEN}` }
     })
-
-    if (!mpResponse.ok) throw new Error('Falha MP')
-    const paymentData = await mpResponse.json()
-
-    if (paymentData.status !== 'approved') {
-        console.log(`⏳ Pagamento ainda não aprovado. Status: ${paymentData.status}`)
-        return new Response('Aguardando aprovação', { status: 200 })
+    
+    if (!mpResponse.ok) {
+      console.error(`❌ [WEBHOOK] Erro ao validar pagamento: ${mpResponse.status}`)
+      throw new Error("Erro ao validar pagamento no MP")
     }
-
-    console.log(`✅ Pagamento aprovado! ID: ${dataId}`)
-
-    // 2. Prepara os dados do aluno
-    const email = paymentData.payer.email
-    const nome = paymentData.payer.first_name
-       ? `${paymentData.payer.first_name} ${paymentData.payer.last_name || ''}`.trim()
-       : 'Novo Aluno'
-
-    // Extract additional metadata from payment
-    const metadata = paymentData.metadata || {}
-    const sexo = metadata.sexo || 'não_informado'
-
-    const plano = paymentData.external_reference || 'MENSAL'
-
-    console.log(`📋 Dados do pagamento:`)
-    console.log(`  - Email: ${email}`)
-    console.log(`  - Nome: ${nome}`)
-    console.log(`  - Gênero: ${sexo}`)
-    console.log(`  - Plano: ${plano}`)
-    const hoje = new Date()
-    const dataFinal = new Date()
     
-    // Calcula a data final baseado no plano escolhido
-    if (plano.includes('ANUAL')) dataFinal.setFullYear(hoje.getFullYear() + 1)
-    else dataFinal.setMonth(hoje.getMonth() + 6)
-    
-    const dataFormatada = dataFinal.toISOString().split('T')[0]
-    
-    // Pega o token seguro do Supabase
-    const tokenEscola = (Deno.env.get('ESCOLA_TOKEN') ?? '').trim()
+    const payment = await mpResponse.json()
+    console.log(`✅ [WEBHOOK] Pagamento obtido. Status: ${payment.status}`)
 
-    // 3. Monta o pacote de envio (FormData é o segredo aqui)
-    const formData = new FormData()
-    formData.append('token', tokenEscola)
-    formData.append('nome', nome)
-    formData.append('email', email)
-    formData.append('sexo', sexo)
-    formData.append('status', 'ativo')
-    formData.append('datafinal', dataFormatada)
-    formData.append('planType', plano) // Include plan type
-    formData.append('senha', Math.random().toString(36).slice(-8)) // Auto-generated password
+    // 4. Se APROVADO OU PENDING, começa o processo
+    // Aceitamos tanto 'approved' quanto 'pending' (cartões de teste ficam pending)
+    if (payment.status === 'approved' || payment.status === 'pending') {
+      console.log(`✅ [WEBHOOK] Pagamento ${payment.status}! Iniciando cadastro...`)
 
-    // 4. URL DA VITÓRIA (Com index.php e rota correta)
-    const urlEscola = "https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo"
+      // Recupera dados do Metadata (com os nomes corretos do novo payload)
+      const meta = payment.metadata || {}
+      const nome = meta.nome_aluno || payment.payer?.first_name || 'Aluno Novo'
+      const email = meta.email_aluno || payment.payer?.email || 'nao_informado@email.com'
+      const sexo = meta.sexo_aluno || 'nao_informado'
+      const plano = meta.plano_escolhido || 'PLANO_ANUAL'
 
-    console.log(`🚀 Enviando para: ${urlEscola}`)
-    console.log(`📋 Criando usuário na plataforma da escola...`)
+      console.log(`📊 [WEBHOOK] Dados extraídos do pagamento:`)
+      console.log(`  ├─ Nome: ${nome}`)
+      console.log(`  ├─ Email: ${email}`)
+      console.log(`  ├─ Sexo: ${sexo}`)
+      console.log(`  └─ Plano: ${plano}`)
 
-    const escolaResponse = await fetch(urlEscola, {
+      // --- PASSO 1: CRIAR O ALUNO ---
+      console.log(`1️⃣ [WEBHOOK] Criando aluno...`)
+      
+      const formCadastro = new FormData()
+      formCadastro.append('token', TOKEN_ESCOLA)
+      formCadastro.append('nome', nome)
+      formCadastro.append('email', email)
+      formCadastro.append('status', 'ativo')
+      formCadastro.append('sexo', sexo)
+      formCadastro.append('plano', plano)
+
+      const resCadastro = await fetch(`${BASE_URL}?usuarios/novo`, {
         method: 'POST',
         headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; Bot/1.0)',
-            // NÃO defina Content-Type aqui, o fetch faz automático para FormData
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         },
-        body: formData,
-    })
+        body: formCadastro
+      })
 
-    const rawText = await escolaResponse.text()
-    console.log("✅ Resposta da Escola:", rawText)
-    console.log(`✨ Usuário ${email} criado com sucesso!`)
+      const textoCadastro = await resCadastro.text()
+      console.log(`📊 [WEBHOOK] Resposta do cadastro (status ${resCadastro.status}): ${textoCadastro}`)
+      
+      let idAluno = null
 
-    return new Response(JSON.stringify({ success: true, response: rawText }), {
-      headers: { "Content-Type": "application/json" },
-      status: 200,
-    })
+      try {
+        const jsonCadastro = JSON.parse(textoCadastro)
+        // Pega o ID do aluno (O campo 'login' na sua API parece ser o ID numérico)
+        if (jsonCadastro.resultado && jsonCadastro.resultado.login) {
+          idAluno = jsonCadastro.resultado.login
+          console.log(`✅ [WEBHOOK] Aluno criado com ID: ${idAluno}`)
+        } else {
+          console.warn(`⚠️ [WEBHOOK] Aluno pode ter sido criado, mas ID não encontrado no response:`, jsonCadastro)
+        }
+      } catch (e) {
+        console.warn(`⚠️ [WEBHOOK] Resposta não é JSON. Raw text: ${textoCadastro}`)
+        // Às vezes a API retorna sucesso mas não em JSON
+        // Mesmo assim, continuamos com o email
+      }
+
+      // --- PASSO 2: DISPARAR E-MAIL DO SISTEMA ---
+      if (idAluno) {
+        console.log(`2️⃣ [WEBHOOK] Solicitando envio de e-mail para o aluno ${idAluno}...`)
+        
+        const formEmail = new FormData()
+        formEmail.append('token', TOKEN_ESCOLA)
+        formEmail.append('aluno', idAluno.toString()) // Passa o ID recebido
+
+        const resEmail = await fetch(`${BASE_URL}?usuarios/envioemail`, {
+          method: 'POST',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          },
+          body: formEmail
+        })
+        
+        const textoEmail = await resEmail.text()
+        console.log(`📩 [WEBHOOK] Status do envio de e-mail (status ${resEmail.status}): ${textoEmail}`)
+        
+        if (resEmail.ok) {
+          console.log(`✅ [WEBHOOK] E-mail disparado com sucesso`)
+        } else {
+          console.warn(`⚠️ [WEBHOOK] Erro ao disparar e-mail`)
+        }
+      } else {
+        console.warn(`⚠️ [WEBHOOK] ID do aluno não obtido, pulando envio de e-mail`)
+      }
+
+      console.log(`✨ [WEBHOOK] Processo de cadastro finalizado para ${email}`)
+    } else {
+      console.log(`⏳ [WEBHOOK] Pagamento com status '${payment.status}' (não é approved/pending). Ignorando...`)
+    }
+
+    return new Response(JSON.stringify({ message: "Processado com sucesso" }), { status: 200 })
 
   } catch (error) {
-    console.error("Erro:", error)
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 })
+    console.error("❌ [WEBHOOK] Erro Fatal:", error)
+    if (error instanceof Error) {
+      console.error("❌ [WEBHOOK] Stack:", error.stack)
+    }
+    return new Response(JSON.stringify({ 
+      error: error instanceof Error ? error.message : String(error),
+      success: false
+    }), { status: 400 })
   }
 })
