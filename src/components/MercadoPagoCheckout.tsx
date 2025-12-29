@@ -107,10 +107,17 @@ const MercadoPagoCheckout = () => {
       } catch (fetchErr) {
         console.error('Erro ao fazer fetch:', fetchErr);
         throw new Error(
-          `Erro de conexão com a função Mercado Pago. Verifique:\n` +
-          `1. A função foi deployada? (supabase functions deploy create-checkout)\n` +
-          `2. O token MP_ACCESS_TOKEN está configurado no Supabase?\n` +
-          `3. Em produção, verifique a URL: ${apiUrl}\n\n` +
+          `❌ Erro de conexão com a função Mercado Pago.\n\n` +
+          `Possíveis causas:\n` +
+          `1. Token MP_ACCESS_TOKEN não configurado em Supabase Secrets\n` +
+          `2. Função não foi deployada\n` +
+          `3. URL da função está incorreta\n\n` +
+          `Solução rápida:\n` +
+          `1. Acesse: https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets\n` +
+          `2. Clique em "New secret"\n` +
+          `3. Name: MP_ACCESS_TOKEN\n` +
+          `4. Value: Token de teste do Mercado Pago (https://www.mercadopago.com.br/developers/panel/credentials)\n` +
+          `5. Salve e aguarde 1-2 minutos\n\n` +
           `Erro técnico: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
         );
       }
