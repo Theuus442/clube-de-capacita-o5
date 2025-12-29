@@ -37,12 +37,29 @@ serve(async (req: Request) => {
 
   try {
     // Parse request body
-    const { planType }: RequestBody = await req.json()
+    const { planType, redirectUrl }: RequestBody = await req.json()
 
     // Validate plan type
     if (!planType || !['anual', 'semestral'].includes(planType)) {
       return new Response(
         JSON.stringify({ error: 'Tipo de plano inválido' }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
+      )
+    }
+
+    // Get base URL (from client or fallback)
+    const baseUrl = redirectUrl || new URL(req.url).origin
+
+    // Validate URL format
+    if (!baseUrl.startsWith('http')) {
+      return new Response(
+        JSON.stringify({ error: 'URL de redirecionamento inválida' }),
         {
           status: 400,
           headers: {
