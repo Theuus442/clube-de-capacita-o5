@@ -93,7 +93,8 @@ serve(async (req) => {
     // 4. URL DA VITÓRIA (Com index.php e rota correta)
     const urlEscola = "https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo"
 
-    console.log(`Enviando para: ${urlEscola}`)
+    console.log(`🚀 Enviando para: ${urlEscola}`)
+    console.log(`📋 Criando usuário na plataforma da escola...`)
 
     const escolaResponse = await fetch(urlEscola, {
         method: 'POST',
@@ -105,7 +106,8 @@ serve(async (req) => {
     })
 
     const rawText = await escolaResponse.text()
-    console.log("Resposta da Escola:", rawText)
+    console.log("✅ Resposta da Escola:", rawText)
+    console.log(`✨ Usuário ${email} criado com sucesso!`)
 
     return new Response(JSON.stringify({ success: true, response: rawText }), {
       headers: { "Content-Type": "application/json" },
