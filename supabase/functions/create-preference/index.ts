@@ -38,7 +38,7 @@ serve(async (req: Request) => {
       throw new Error('Erro interno: Token do MP não configurado.')
     }
 
-    const { planType, redirectUrl } = await req.json()
+    const { planType, redirectUrl, email, nome, sexo } = await req.json()
 
     if (!planType || !planConfig[planType]) {
       return new Response(JSON.stringify({ error: 'Tipo de plano inválido' }), {
@@ -46,6 +46,9 @@ serve(async (req: Request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
+
+    // Log received data for debugging
+    console.log('📩 Dados recebidos:', { planType, email, nome, sexo })
 
     const plan = planConfig[planType]
     const baseUrl = redirectUrl || new URL(req.url).origin
