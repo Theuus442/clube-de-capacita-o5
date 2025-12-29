@@ -99,17 +99,17 @@ Mas se ainda assim receber erro, verifique o console do navegador (F12):
 
 ## ✅ Passo 6: Verificar URL da Função
 
-Em `src/pages/Checkout.tsx`, verifique se a URL está **EXATAMENTE**:
+A URL agora é configurada automaticamente em `src/lib/api-config.ts`:
 
 ```typescript
-const SUPABASE_FUNCTION_URL = 'https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference';
+// Em desenvolvimento: /api/mercado-pago (proxy Vite)
+// Em produção: https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout
 ```
 
 ⚠️ **Verifique:**
-- Não tem typos?
-- Não tem barra extra no final?
-- Está em HTTPS (não HTTP)?
-- O nome da função é `create-preference` (não `create-checkout`)?
+- Você está usando a função correta? `create-checkout` (não `create-preference`)
+- A função `create-checkout` está deployada no Supabase?
+- O token `MP_ACCESS_TOKEN` está configurado?
 
 ---
 
