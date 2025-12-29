@@ -123,6 +123,10 @@ serve(async (req: Request) => {
     // Ensure baseUrl has no trailing slash
     const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
 
+    // Get Supabase project ID from environment or extract from function URL
+    const supabaseProjectId = Deno.env.get('SUPABASE_PROJECT_ID') || 'zajyeykcepcrlngmdpvf'
+    const webhookUrl = `https://${supabaseProjectId}.supabase.co/functions/v1/mp-webhook`
+
     // Create preference payload
     const preferencePayload = {
       items: [
@@ -140,12 +144,14 @@ serve(async (req: Request) => {
         failure: `${cleanBaseUrl}/payment-return?status=failure`,
         pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      notification_url: `${cleanBaseUrl}/api/webhooks/mercado-pago`,
+      notification_url: webhookUrl,
+      external_reference: planType,
     }
 
     console.log('📋 Criando preferência para plano:', planType)
     console.log('💰 Plano:', plan)
     console.log('🔗 Base URL:', cleanBaseUrl)
+    console.log('🔔 Webhook URL:', webhookUrl)
 
     // Create preference in Mercado Pago
     const response = await fetch(MERCADO_PAGO_API_URL, {
