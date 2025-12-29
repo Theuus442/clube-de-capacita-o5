@@ -59,6 +59,21 @@ const plans: Plan[] = [
     icon: <Zap className="w-6 h-6" />,
     popular: false,
   },
+  {
+    id: 'mensal',
+    name: 'Plano Mensal',
+    price: '47,90',
+    period: '',
+    description: 'Acesso completo à plataforma por 1 mês',
+    features: [
+      'Todos os cursos disponíveis',
+      'Certificados inclusos',
+      'Acesso por 1 mês',
+      'Perfeito para começar',
+    ],
+    icon: <Target className="w-6 h-6" />,
+    popular: false,
+  },
 ];
 
 const MercadoPagoCheckout = ({ onPlanSelect }: MercadoPagoCheckoutProps = {}) => {
