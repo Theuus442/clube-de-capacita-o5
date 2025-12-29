@@ -99,17 +99,40 @@ const MercadoPagoCheckout = ({
         throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
       }
 
-      const response = await fetch(supabaseFunctionUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${anonKey}`,
-        },
-        body: JSON.stringify({
-          planType: planId,
-          redirectUrl: window.location.origin,
-        }),
-      });
+      // Validate URL
+      if (!supabaseFunctionUrl || !supabaseFunctionUrl.startsWith('https://')) {
+        throw new Error(`URL da função inválida: ${supabaseFunctionUrl}. Verifique se está configurada corretamente em src/pages/Checkout.tsx`);
+      }
+
+      console.log('Iniciando requisição para:', supabaseFunctionUrl);
+      console.log('Plano selecionado:', planId);
+      console.log('Redirect URL:', window.location.origin);
+
+      let response;
+      try {
+        response = await fetch(supabaseFunctionUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${anonKey}`,
+          },
+          body: JSON.stringify({
+            planType: planId,
+            redirectUrl: window.location.origin,
+          }),
+        });
+      } catch (fetchErr) {
+        console.error('Erro ao fazer fetch:', fetchErr);
+        throw new Error(
+          `Erro de conexão com a função Supabase. Verifique:\n` +
+          `1. A função foi deployada? (supabase functions deploy create-preference)\n` +
+          `2. O token MERCADO_PAGO_ACCESS_TOKEN está configurado no Supabase?\n` +
+          `3. A URL está correta: ${supabaseFunctionUrl}\n\n` +
+          `Erro técnico: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
+        );
+      }
+
+      console.log('Resposta recebida com status:', response.status);
 
       if (!response.ok) {
         let errorDetails = '';
@@ -125,7 +148,7 @@ const MercadoPagoCheckout = ({
           details: errorDetails,
         });
         throw new Error(
-          `Erro da função: ${response.status} ${response.statusText}. Detalhes: ${errorDetails}`
+          `Erro da função (${response.status}): ${errorDetails}`
         );
       }
 
@@ -154,7 +177,7 @@ const MercadoPagoCheckout = ({
         errorMessage = JSON.stringify(err);
       }
 
-      console.error('Erro no checkout:', err);
+      console.error('Erro completo no checkout:', err);
 
       setCheckout({
         selectedPlanId: null,
