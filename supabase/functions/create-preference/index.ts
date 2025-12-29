@@ -58,7 +58,11 @@ serve(async (req: Request) => {
     const supabaseProjectId = Deno.env.get('SUPABASE_PROJECT_ID') || 'zajyeykcepcrlngmdpvf'
     const webhookUrl = `https://${supabaseProjectId}.supabase.co/functions/v1/mp-webhook`
 
-    console.log(`Criando preferência: ${planType} | Webhook: ${webhookUrl}`)
+    console.log(`🎯 Criando preferência para plano: ${planType}`)
+    console.log(`👤 Aluno: ${nome} (${email})`)
+    console.log(`⚖️ Gênero: ${sexo}`)
+    console.log(`🔔 Webhook: ${webhookUrl}`)
+    console.log(`💰 Valor: R$ ${plan.price}`)
 
     // Build payer information if provided
     const payerInfo = {
