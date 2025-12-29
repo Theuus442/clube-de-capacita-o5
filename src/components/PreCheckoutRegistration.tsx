@@ -86,57 +86,12 @@ const PreCheckoutRegistration = ({
         sexo: formData.gender,
         planType: planType,
       });
+      console.log('💡 API da escola será chamada pelo webhook após pagamento aprovado');
       console.groupEnd();
-      // Step 1: Create user in the school's API with "bloqueado" status
-      console.log('📝 Criando usuário na plataforma...');
 
-      const formDataApi = new FormData();
-      // Get token from environment or use placeholder
-      const escolaToken = import.meta.env.VITE_ESCOLA_TOKEN || '';
-      formDataApi.append('token', escolaToken || 'TOKEN_NOT_CONFIGURED');
-      formDataApi.append('nome', formData.fullName);
-      formDataApi.append('email', formData.email);
-      formDataApi.append('status', 'bloqueado');
-      formDataApi.append('sexo', formData.gender);
-      formDataApi.append('planType', planType); // Include plan type in user creation
-
-      console.log('📋 Dados enviados para criação de usuário:', {
-        nome: formData.fullName,
-        email: formData.email,
-        sexo: formData.gender,
-        planType: planType,
-        status: 'bloqueado',
-      });
-
-      try {
-        const createUserResponse = await fetch(
-          'https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo',
-          {
-            method: 'POST',
-            body: formDataApi,
-          }
-        );
-
-        // Log response even if not ok - the user might still be created
-        const userResponse = await createUserResponse.json().catch(() => null);
-        console.log('📋 Resposta da criação de usuário:', {
-          ok: createUserResponse.ok,
-          status: createUserResponse.status,
-          data: userResponse,
-        });
-
-        if (!createUserResponse.ok && createUserResponse.status === 403) {
-          console.warn('⚠️ Token inválido na API da escola. Continuando com pagamento...');
-        }
-
-        // Continue even if user creation partially failed - focus on Mercado Pago
-      } catch (userError) {
-        console.warn('⚠️ Aviso ao criar usuário (continuando):', userError);
-      }
-
-      // Step 2: Create Mercado Pago preference
+      // Step 1: Create Mercado Pago preference with user metadata
       console.log('💳 Criando preferência de pagamento...');
-      console.log('📊 Dados do pagamento:', {
+      console.log('📊 Enviando dados:', {
         planType: planType,
         email: formData.email,
         nome: formData.fullName,
