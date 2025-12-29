@@ -127,19 +127,32 @@ const MercadoPagoCheckout = () => {
 
       if (!response.ok) {
         let errorDetails = '';
+        let errorType = '';
         try {
           const errorData = await response.json();
           errorDetails = errorData.error || JSON.stringify(errorData);
+          errorType = errorData.code || errorData.type || '';
         } catch {
           errorDetails = await response.text();
         }
-        console.error('Erro da função Supabase:', {
+
+        console.error('❌ Erro da função Supabase:', {
           status: response.status,
           statusText: response.statusText,
+          type: errorType,
           details: errorDetails,
         });
+
+        // Provide specific error messages based on error type
+        let userFriendlyMessage = errorDetails;
+        if (errorType === 'MISSING_MP_TOKEN' || response.status === 500) {
+          userFriendlyMessage = 'Token Mercado Pago não configurado. Acesse Supabase Secrets e configure MP_ACCESS_TOKEN.';
+        } else if (response.status === 401) {
+          userFriendlyMessage = 'Token inválido. Verifique se o token está correto em Supabase Secrets.';
+        }
+
         throw new Error(
-          `Erro da função (${response.status}): ${errorDetails}`
+          `Erro da função (${response.status}): ${userFriendlyMessage}`
         );
       }
 
