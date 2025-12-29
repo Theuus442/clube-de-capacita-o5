@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Loader, Crown, Zap, X, Lock, Target } from 'lucide-react';
+import { getMercadoPagoApiUrl, isUsingProxy } from '@/lib/api-config';
 
 interface Plan {
   id: string;
