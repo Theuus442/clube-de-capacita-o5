@@ -175,6 +175,15 @@ const PreCheckoutRegistration = ({
 
       // Step 3: Redirect to Mercado Pago
       if (preferenceData.preferenceId) {
+        console.group('✅ CHECKOUT PREPARADO COM SUCESSO');
+        console.log('🎯 Preference ID:', preferenceData.preferenceId);
+        console.log('📊 Resumo:');
+        console.log('  Plano:', planType);
+        console.log('  Cliente:', formData.fullName);
+        console.log('  Email:', formData.email);
+        console.log('  Status: Pronto para pagamento');
+        console.groupEnd();
+
         console.log('🔄 Redirecionando para Mercado Pago...');
         const checkoutUrl = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${preferenceData.preferenceId}`;
         window.location.href = checkoutUrl;
