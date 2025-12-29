@@ -87,11 +87,11 @@ Mas se ainda assim receber erro, verifique o console do navegador (F12):
 ## ✅ Passo 5: Verificar Logs da Função
 
 ### Via Painel Supabase:
-1. Functions → create-preference
+1. Functions → create-checkout
 2. Clique em "Logs"
 3. Veja os logs da última execução
 4. Procure por erros como:
-   - `MERCADO_PAGO_ACCESS_TOKEN não configurado`
+   - `MP_ACCESS_TOKEN não configurado`
    - `Tipo de plano inválido`
    - Erros da API do Mercado Pago
 
