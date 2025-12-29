@@ -70,6 +70,11 @@ serve(async (req: Request) => {
       ...(nome && { name: nome }),
     }
 
+    // 💡 IMPORTANTE: Os dados do usuário (email, nome, sexo) são armazenados
+    // nos metadados da preferência. O webhook usará esses dados para criar
+    // o usuário na plataforma da escola APÓS o pagamento ser aprovado.
+    // O front-end NÃO chama a API da escola diretamente!
+
     const preferencePayload = {
       items: [
         {
@@ -91,6 +96,7 @@ serve(async (req: Request) => {
       // Add payer information if provided
       ...(Object.keys(payerInfo).length > 0 && { payer: payerInfo }),
       // Store custom metadata for webhook reference
+      // ⚠️ O webhook usará isso para criar o usuário na escola!
       metadata: {
         email: email || 'not_provided',
         nome: nome || 'anonymous',
