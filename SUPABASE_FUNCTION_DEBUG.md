@@ -139,12 +139,12 @@ A URL agora é configurada automaticamente em `src/lib/api-config.ts`:
 
 ## 📝 Checklist Final
 
-- [ ] Função `create-preference` está deployada
-- [ ] `MERCADO_PAGO_ACCESS_TOKEN` está configurado no Supabase
+- [ ] Função `create-checkout` está deployada
+- [ ] `MP_ACCESS_TOKEN` está configurado no Supabase Secrets
 - [ ] Token é de **PRODUÇÃO** (não teste)
-- [ ] URL em `Checkout.tsx` está correta: `create-preference`
 - [ ] Testei o fetch via cURL e funcionou
 - [ ] Verificei os logs da função no painel Supabase
+- [ ] Acionei um plano no checkout e viu o formulário do Mercado Pago
 
 Se ainda assim não funcionar, compartilhe:
 1. O erro completo do console (F12)
