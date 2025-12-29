@@ -80,12 +80,6 @@ const MercadoPagoCheckout = () => {
     try {
       const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-      // Validate URL
-      const apiUrl = getMercadoPagoApiUrl();
-      if (!apiUrl) {
-        throw new Error('Erro ao determinar URL da API de pagamento.');
-      }
-
       console.log('Iniciando requisição para:', apiUrl);
       console.log('Usando proxy:', useProxy);
       console.log('Plano selecionado:', planId);
