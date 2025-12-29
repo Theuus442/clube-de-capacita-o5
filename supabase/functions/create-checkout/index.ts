@@ -199,12 +199,15 @@ serve(async (req: Request) => {
     })
   } catch (error) {
     console.error('❌ Erro completo na função:', error)
+
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const isTokenError = errorMessage.includes('Token') || errorMessage.includes('401')
+
     return new Response(
       JSON.stringify({
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Erro interno do servidor',
+        error: errorMessage,
+        type: isTokenError ? 'TOKEN_ERROR' : 'UNKNOWN_ERROR',
+        timestamp: new Date().toISOString(),
       }),
       {
         status: 500,
