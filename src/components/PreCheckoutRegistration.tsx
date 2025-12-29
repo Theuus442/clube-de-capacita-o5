@@ -128,7 +128,7 @@ const PreCheckoutRegistration = ({
       const preferenceData = await preferenceResponse.json();
       console.log('✅ Preferência criada:', preferenceData);
 
-      // Step 3: Redirect to Mercado Pago
+      // Step 2: Redirect to Mercado Pago
       if (preferenceData.preferenceId) {
         console.group('✅ CHECKOUT PREPARADO COM SUCESSO');
         console.log('🎯 Preference ID:', preferenceData.preferenceId);
