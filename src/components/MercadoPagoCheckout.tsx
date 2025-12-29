@@ -107,6 +107,7 @@ const MercadoPagoCheckout = ({
         },
         body: JSON.stringify({
           planType: planId,
+          redirectUrl: window.location.origin,
         }),
       });
 
