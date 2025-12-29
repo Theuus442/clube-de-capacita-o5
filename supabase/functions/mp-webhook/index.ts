@@ -44,16 +44,29 @@ serve(async (req) => {
     const paymentData = await mpResponse.json()
 
     if (paymentData.status !== 'approved') {
+        console.log(`⏳ Pagamento ainda não aprovado. Status: ${paymentData.status}`)
         return new Response('Aguardando aprovação', { status: 200 })
     }
 
+    console.log(`✅ Pagamento aprovado! ID: ${dataId}`)
+
     // 2. Prepara os dados do aluno
     const email = paymentData.payer.email
-    const nome = paymentData.payer.first_name 
+    const nome = paymentData.payer.first_name
        ? `${paymentData.payer.first_name} ${paymentData.payer.last_name || ''}`.trim()
        : 'Novo Aluno'
-    
+
+    // Extract additional metadata from payment
+    const metadata = paymentData.metadata || {}
+    const sexo = metadata.sexo || 'não_informado'
+
     const plano = paymentData.external_reference || 'MENSAL'
+
+    console.log(`📋 Dados do pagamento:`)
+    console.log(`  - Email: ${email}`)
+    console.log(`  - Nome: ${nome}`)
+    console.log(`  - Gênero: ${sexo}`)
+    console.log(`  - Plano: ${plano}`)
     const hoje = new Date()
     const dataFinal = new Date()
     
