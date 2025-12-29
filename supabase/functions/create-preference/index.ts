@@ -38,7 +38,7 @@ serve(async (req: Request) => {
       throw new Error('Erro interno: Token do MP não configurado.')
     }
 
-    const { planType, redirectUrl } = await req.json()
+    const { planType, redirectUrl, email, nome, sexo } = await req.json()
 
     if (!planType || !planConfig[planType]) {
       return new Response(JSON.stringify({ error: 'Tipo de plano inválido' }), {
@@ -46,6 +46,9 @@ serve(async (req: Request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
+
+    // Log received data for debugging
+    console.log('📩 Dados recebidos:', { planType, email, nome, sexo })
 
     const plan = planConfig[planType]
     const baseUrl = redirectUrl || new URL(req.url).origin
@@ -55,7 +58,22 @@ serve(async (req: Request) => {
     const supabaseProjectId = Deno.env.get('SUPABASE_PROJECT_ID') || 'zajyeykcepcrlngmdpvf'
     const webhookUrl = `https://${supabaseProjectId}.supabase.co/functions/v1/mp-webhook`
 
-    console.log(`Criando preferência: ${planType} | Webhook: ${webhookUrl}`)
+    console.log(`🎯 Criando preferência para plano: ${planType}`)
+    console.log(`👤 Aluno: ${nome} (${email})`)
+    console.log(`⚖️ Gênero: ${sexo}`)
+    console.log(`🔔 Webhook: ${webhookUrl}`)
+    console.log(`💰 Valor: R$ ${plan.price}`)
+
+    // Build payer information if provided
+    const payerInfo = {
+      ...(email && { email }),
+      ...(nome && { name: nome }),
+    }
+
+    // 💡 IMPORTANTE: Os dados do usuário (email, nome, sexo) são armazenados
+    // nos metadados da preferência. O webhook usará esses dados para criar
+    // o usuário na plataforma da escola APÓS o pagamento ser aprovado.
+    // O front-end NÃO chama a API da escola diretamente!
 
     const preferencePayload = {
       items: [
@@ -73,8 +91,17 @@ serve(async (req: Request) => {
         failure: `${cleanBaseUrl}/payment-return?status=failure`,
         pending: `${cleanBaseUrl}/payment-return?status=pending`,
       },
-      external_reference: plan.ref, // Importante para sabermos se é Anual ou Semestral
+      external_reference: `${plan.ref}_${email || 'anonymous'}`, // Include email for better tracking
       notification_url: webhookUrl,
+      // Add payer information if provided
+      ...(Object.keys(payerInfo).length > 0 && { payer: payerInfo }),
+      // Store custom metadata for webhook reference
+      // ⚠️ O webhook usará isso para criar o usuário na escola!
+      metadata: {
+        email: email || 'not_provided',
+        nome: nome || 'anonymous',
+        sexo: sexo || 'not_provided',
+      },
     }
 
     const response = await fetch(MERCADO_PAGO_API_URL, {

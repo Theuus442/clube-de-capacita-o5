@@ -24,6 +24,10 @@ interface CheckoutState {
   error: string | null;
 }
 
+interface MercadoPagoCheckoutProps {
+  onPlanSelect?: (planId: string) => void;
+}
+
 const plans: Plan[] = [
   {
     id: 'anual',
@@ -57,7 +61,7 @@ const plans: Plan[] = [
   },
 ];
 
-const MercadoPagoCheckout = () => {
+const MercadoPagoCheckout = ({ onPlanSelect }: MercadoPagoCheckoutProps = {}) => {
   const [checkout, setCheckout] = useState<CheckoutState>({
     selectedPlanId: null,
     preferenceId: null,
@@ -66,6 +70,13 @@ const MercadoPagoCheckout = () => {
   });
 
   const handlePlanSelect = async (planId: string) => {
+    // If onPlanSelect callback is provided, use it (new flow with registration)
+    if (onPlanSelect) {
+      onPlanSelect(planId);
+      return;
+    }
+
+    // Otherwise, use the old checkout flow
     // Use automatic API URL detection
     const apiUrl = getMercadoPagoApiUrl();
     const useProxy = isUsingProxy();
@@ -290,8 +301,8 @@ const MercadoPagoCheckout = () => {
                   </p>
                   <ul className="text-xs text-destructive/80 space-y-1 ml-4">
                     <li>☑️ MP_ACCESS_TOKEN configurado em Supabase Secrets</li>
-                    <li>☑️ Função deployada: <code className="bg-black/20 px-1 py-0.5 rounded">supabase functions deploy create-checkout</code></li>
-                    <li>☑️ URL correta: <code className="bg-black/20 px-1 py-0.5 rounded text-xs">https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-checkout</code></li>
+                    <li>☑️ Função deployada: <code className="bg-black/20 px-1 py-0.5 rounded">supabase functions deploy create-preference</code></li>
+                    <li>☑️ URL correta: <code className="bg-black/20 px-1 py-0.5 rounded text-xs">https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference</code></li>
                   </ul>
                 </div>
 

@@ -1,9 +1,25 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MercadoPagoCheckout from '@/components/MercadoPagoCheckout';
+import PreCheckoutRegistration from '@/components/PreCheckoutRegistration';
+
+type CheckoutStep = 'plans' | 'registration';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>('plans');
+  const [selectedPlan, setSelectedPlan] = useState<'anual' | 'semestral' | null>(null);
+
+  const handlePlanSelected = (planId: string) => {
+    setSelectedPlan(planId as 'anual' | 'semestral');
+    setCurrentStep('registration');
+  };
+
+  const handleBackToPlans = () => {
+    setCurrentStep('plans');
+    setSelectedPlan(null);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -19,11 +35,12 @@ const CheckoutPage = () => {
           </button>
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-              Escolha seu Plano
+              {currentStep === 'plans' ? 'Escolha seu Plano' : 'Complete seu Cadastro'}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Obtenha acesso completo a todos os nossos cursos e recursos premium.
-              Escolha o plano que melhor se adapta às suas necessidades.
+              {currentStep === 'plans'
+                ? 'Obtenha acesso completo a todos os nossos cursos e recursos premium. Escolha o plano que melhor se adapta às suas necessidades.'
+                : 'Preencha seus dados para continuar com o pagamento de forma segura.'}
             </p>
           </div>
         </div>
@@ -31,7 +48,29 @@ const CheckoutPage = () => {
 
       {/* Checkout Component */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <MercadoPagoCheckout />
+        {currentStep === 'plans' ? (
+          <MercadoPagoCheckout onPlanSelect={handlePlanSelected} />
+        ) : selectedPlan ? (
+          <div className="space-y-6">
+            <PreCheckoutRegistration
+              planType={selectedPlan}
+              onSuccess={() => {
+                // Success will redirect to Mercado Pago
+              }}
+              onError={(error) => {
+                console.error('Checkout error:', error);
+              }}
+            />
+            <div className="text-center">
+              <button
+                onClick={handleBackToPlans}
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                ← Voltar aos planos
+              </button>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {/* FAQ Section */}
