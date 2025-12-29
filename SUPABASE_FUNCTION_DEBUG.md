@@ -31,9 +31,9 @@ supabase functions deploy create-checkout
 
 ### Via Painel Supabase:
 1. Project Settings → Secrets
-2. Procure por `MERCADO_PAGO_ACCESS_TOKEN`
+2. Procure por `MP_ACCESS_TOKEN`
 3. Se não existir, **CRIE AGORA**:
-   - Name: `MERCADO_PAGO_ACCESS_TOKEN`
+   - Name: `MP_ACCESS_TOKEN`
    - Value: seu token de **PRODUÇÃO** do Mercado Pago
    
 ### Obter o Token:
