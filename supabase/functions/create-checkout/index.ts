@@ -87,20 +87,26 @@ serve(async (req: Request) => {
 
     // Validate access token
     if (!MERCADO_PAGO_ACCESS_TOKEN) {
-      console.error('❌ MP_ACCESS_TOKEN não configurado em Supabase Secrets')
-      console.error('Para configurar, acesse:')
-      console.error('https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets')
+      console.error('❌ CRITICAL: MP_ACCESS_TOKEN não configurado em Supabase Secrets')
+      console.error('📍 Projeto: zajyeykcepcrlngmdpvf')
+      console.error('🔗 Para configurar: https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets')
       console.error('')
       console.error('Passos:')
-      console.error('1. Acesse: https://www.mercadopago.com.br/developers/panel/credentials')
-      console.error('2. Selecione MODO TESTE (switch no topo)')
-      console.error('3. Copie o "Access Token" da seção teste (começa com TEST-)')
-      console.error('4. Em Supabase, adicione novo secret: MP_ACCESS_TOKEN = {seu_token}')
+      console.error('1. Acesse Supabase Dashboard → Settings → Secrets')
+      console.error('2. Clique em "New secret"')
+      console.error('3. Name: MP_ACCESS_TOKEN')
+      console.error('4. Value: Seu token do Mercado Pago')
+      console.error('5. Save e aguarde 1-2 minutos')
+      console.error('')
+      console.error('Para obter o token:')
+      console.error('- Acesse: https://www.mercadopago.com.br/developers/panel/credentials')
+      console.error('- Cópia o token (TEST-xxx ou APP_USR-xxx)')
 
       return new Response(
         JSON.stringify({
-          error: 'Erro na configuração do servidor. Token do Mercado Pago (MP_ACCESS_TOKEN) não encontrado.',
-          instructions: 'Acesse https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets e configure MP_ACCESS_TOKEN com seu token de teste do Mercado Pago',
+          error: 'Erro de Configuração: Token Mercado Pago não encontrado',
+          code: 'MISSING_MP_TOKEN',
+          instructions: 'Configure MP_ACCESS_TOKEN em https://supabase.com/dashboard/project/zajyeykcepcrlngmdpvf/settings/secrets',
         }),
         {
           status: 500,
