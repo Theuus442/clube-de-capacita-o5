@@ -80,13 +80,10 @@ const MercadoPagoCheckout = () => {
     try {
       const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-      if (!anonKey) {
-        throw new Error('Chave de autenticação Supabase não configurada. Configure VITE_SUPABASE_ANON_KEY.');
-      }
-
       // Validate URL
-      if (!supabaseFunctionUrl || !supabaseFunctionUrl.startsWith('https://')) {
-        throw new Error(`URL da função inválida: ${supabaseFunctionUrl}. Verifique se está configurada corretamente em src/pages/Checkout.tsx`);
+      const apiUrl = getMercadoPagoApiUrl();
+      if (!apiUrl) {
+        throw new Error('Erro ao determinar URL da API de pagamento.');
       }
 
       console.log('Iniciando requisição para:', apiUrl);
