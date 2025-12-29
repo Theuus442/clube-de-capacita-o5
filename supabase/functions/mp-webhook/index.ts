@@ -164,7 +164,10 @@ serve(async (req) => {
     })
 
   } catch (error) {
-    console.error("Erro:", error)
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 })
+    console.error("❌ [WEBHOOK] ERRO FATAL:", error)
+    if (error instanceof Error) {
+      console.error("❌ [WEBHOOK] Stack:", error.stack)
+    }
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }), { status: 500 })
   }
 })
