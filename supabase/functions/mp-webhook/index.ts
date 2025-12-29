@@ -100,11 +100,19 @@ serve(async (req) => {
     else dataFinal.setMonth(hoje.getMonth() + 6)
     
     const dataFormatada = dataFinal.toISOString().split('T')[0]
-    
+
+    console.log(`📍 [WEBHOOK] Data de expiração calculada: ${dataFormatada}`)
+
     // Pega o token seguro do Supabase
     const tokenEscola = (Deno.env.get('ESCOLA_TOKEN') ?? '').trim()
 
+    if (!tokenEscola) {
+      console.error('❌ [WEBHOOK] ESCOLA_TOKEN não configurado!')
+      throw new Error('ESCOLA_TOKEN não configurado em Supabase Secrets')
+    }
+
     // 3. Monta o pacote de envio (FormData é o segredo aqui)
+    console.log(`📍 [WEBHOOK] Preparando FormData...`)
     const formData = new FormData()
     formData.append('token', tokenEscola)
     formData.append('nome', nome)
@@ -115,11 +123,21 @@ serve(async (req) => {
     formData.append('planType', plano) // Include plan type
     formData.append('senha', Math.random().toString(36).slice(-8)) // Auto-generated password
 
+    console.log(`✅ [WEBHOOK] FormData preparado com os seguintes campos:`)
+    console.log(`  ├─ token: [SECRETO]`)
+    console.log(`  ├─ nome: ${nome}`)
+    console.log(`  ├─ email: ${email}`)
+    console.log(`  ├─ sexo: ${sexo}`)
+    console.log(`  ├─ status: ativo`)
+    console.log(`  ├─ datafinal: ${dataFormatada}`)
+    console.log(`  ├─ planType: ${plano}`)
+    console.log(`  └─ senha: [AUTO-GERADA]`)
+
     // 4. URL DA VITÓRIA (Com index.php e rota correta)
     const urlEscola = "https://estudandoead.com/threynnare/api/v2/index.php?usuarios/novo"
 
-    console.log(`🚀 Enviando para: ${urlEscola}`)
-    console.log(`📋 Criando usuário na plataforma da escola...`)
+    console.log(`🚀 [WEBHOOK] Enviando para: ${urlEscola}`)
+    console.log(`📋 [WEBHOOK] Criando usuário na plataforma da escola...`)
 
     const escolaResponse = await fetch(urlEscola, {
         method: 'POST',
@@ -130,9 +148,15 @@ serve(async (req) => {
         body: formData,
     })
 
+    console.log(`📊 [WEBHOOK] Resposta da Escola - Status: ${escolaResponse.status}`)
     const rawText = await escolaResponse.text()
-    console.log("✅ Resposta da Escola:", rawText)
-    console.log(`✨ Usuário ${email} criado com sucesso!`)
+    console.log(`📊 [WEBHOOK] Resposta da Escola - Body:`, rawText)
+
+    if (!escolaResponse.ok) {
+      console.warn(`⚠️ [WEBHOOK] Escola retornou status ${escolaResponse.status}`)
+    }
+
+    console.log(`✅ [WEBHOOK] Usuário ${email} criado com sucesso!`)
 
     return new Response(JSON.stringify({ success: true, response: rawText }), {
       headers: { "Content-Type": "application/json" },
