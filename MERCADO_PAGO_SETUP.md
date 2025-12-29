@@ -56,6 +56,18 @@ Para fazer o deployment e ativar o checkout:
    - ✅ Já atualizei em `src/pages/Checkout.tsx`
    - URL: `https://zajyeykcepcrlngmdpvf.supabase.co/functions/v1/create-preference`
 
+5. **Configure as URLs de Retorno no Mercado Pago**
+   - Acesse o painel Mercado Pago → Configurações → URLs de Retorno
+   - Configure as URLs de retorno conforme abaixo (subepita o domínio pela sua URL real):
+
+   **Para Produção:**
+   - ✅ URL de retorno (Sucesso): `https://seu-dominio.com.br/payment-return?status=approved`
+   - ✅ URL de retorno (Pendência): `https://seu-dominio.com.br/payment-return?status=pending`
+   - ✅ URL de retorno (Falha): `https://seu-dominio.com.br/payment-return?status=failure`
+
+   **Para Testes (localhost):**
+   - Use o ngrok ou similar para expor localhost: `https://seu-ngrok-url.ngrok.io/payment-return?status=approved`
+
 **📖 Veja o guia completo em: `SUPABASE_DEPLOYMENT_GUIDE.md`**
 
 ## 📱 Usando o Componente
