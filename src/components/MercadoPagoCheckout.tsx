@@ -61,7 +61,7 @@ const plans: Plan[] = [
   },
 ];
 
-const MercadoPagoCheckout = () => {
+const MercadoPagoCheckout = ({ onPlanSelect }: MercadoPagoCheckoutProps = {}) => {
   const [checkout, setCheckout] = useState<CheckoutState>({
     selectedPlanId: null,
     preferenceId: null,
@@ -70,6 +70,13 @@ const MercadoPagoCheckout = () => {
   });
 
   const handlePlanSelect = async (planId: string) => {
+    // If onPlanSelect callback is provided, use it (new flow with registration)
+    if (onPlanSelect) {
+      onPlanSelect(planId);
+      return;
+    }
+
+    // Otherwise, use the old checkout flow
     // Use automatic API URL detection
     const apiUrl = getMercadoPagoApiUrl();
     const useProxy = isUsingProxy();
