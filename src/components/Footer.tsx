@@ -46,10 +46,10 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <img 
-                src={logo} 
-                alt="Clube de Capacitação Profissional" 
-                className="h-16 w-auto brightness-0 invert"
+              <img
+                src={logo}
+                alt="Clube de Capacitação Profissional"
+                className="h-16 w-auto"
               />
             </div>
             <p className="text-background/70 mb-6 max-w-md">
