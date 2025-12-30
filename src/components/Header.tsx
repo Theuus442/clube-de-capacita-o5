@@ -29,11 +29,11 @@ const Header = () => {
             <button onClick={scrollToTop} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200 bg-transparent border-none cursor-pointer">
               Inicio
             </button>
-            <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
-              Para quem é
-            </a>
             <a href="#o-que-e" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               O que é
+            </a>
+            <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
+              Para quem é
             </a>
             <a href="#trilhas" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Trilhas
