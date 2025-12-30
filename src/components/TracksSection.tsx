@@ -25,13 +25,13 @@ const tracks = [
   {
     icon: <Sparkles className="w-6 h-6" />,
     title: "Área da Beleza",
-    courses: ["Maquiagem", "Designer de Cílios", "Massagem Modeladora", "Manicure e Pedicure", "Barbeiro"],
+    courses: ["Maquiagem", "Designer de Cílios", "Massagem Modeladora", "Manicure e Pedicure", "Barbeiro", "Instagram para Vendas", "Empreendedorismo"],
     color: "from-pink-500 to-pink-600",
   },
   {
     icon: <Monitor className="w-6 h-6" />,
     title: "Informática e Tecnologia",
-    courses: ["Windows", "Segurança na Internet", "Word", "Excel", "PowerPoint", "Google Drive", "Digitação", "Manutenção de PC"],
+    courses: ["Windows", "Segurança na Internet", "Word", "Excel", "PowerPoint", "Introdução a Internet", "Digitação", "Manutenção de PC"],
     color: "from-cyan-500 to-cyan-600",
   },
   {

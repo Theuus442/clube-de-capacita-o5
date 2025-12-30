@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 const logo = "https://cdn.builder.io/api/v1/image/assets%2Ff4670bbbe2cf4661b102af324234e044%2Fc2b8ad5f20e74cc9bfc3c554409ba0aa?format=webp&width=800";
 
 const Header = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const scrollToPlans = () => {
     document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -22,11 +26,14 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
-              Para quem é
-            </a>
+            <button onClick={scrollToTop} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200 bg-transparent border-none cursor-pointer">
+              Inicio
+            </button>
             <a href="#o-que-e" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               O que é
+            </a>
+            <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
+              Para quem é
             </a>
             <a href="#trilhas" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Trilhas

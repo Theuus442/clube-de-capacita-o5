@@ -4,6 +4,21 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
+    id: "mensal",
+    name: "Plano Mensal",
+    description: "Acesso completo à plataforma por 1 mês",
+    price: "47,90",
+    period: "",
+    features: [
+      "Todos os cursos disponíveis",
+      "Certificados inclusos",
+      "Acesso por 1 mês",
+      "Perfeito para começar",
+    ],
+    icon: <Target className="w-6 h-6" />,
+    popular: false,
+  },
+  {
     id: "anual",
     name: "Plano Anual",
     highlight: "Mais vantajoso",
@@ -31,21 +46,6 @@ const plans = [
       "Acesso por 6 meses",
     ],
     icon: <Zap className="w-6 h-6" />,
-    popular: false,
-  },
-  {
-    id: "mensal",
-    name: "Plano Mensal",
-    description: "Acesso completo à plataforma por 1 mês",
-    price: "47,90",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Acesso por 1 mês",
-      "Perfeito para começar",
-    ],
-    icon: <Target className="w-6 h-6" />,
     popular: false,
   },
 ];
