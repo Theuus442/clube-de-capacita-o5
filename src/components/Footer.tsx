@@ -90,6 +90,9 @@ const Footer = () => {
                 <MapPin className="w-4 h-4 mt-0.5" />
                 <span className="text-sm">Maceió, AL</span>
               </li>
+              <li className="flex items-center gap-3 text-background/70 pt-2 border-t border-background/10">
+                <span className="text-sm font-medium">CNPJ: 19.755.920/0001-48</span>
+              </li>
             </ul>
           </div>
         </div>
