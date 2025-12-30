@@ -99,10 +99,11 @@ const Footer = () => {
           <p className="text-sm text-background/50 text-center mb-6">
             Os cursos do Clube de Capacitação Profissional são voltados para capacitação profissional online e não substituem treinamentos técnicos ou obrigatórios exigidos por lei.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-background/60">
-              © {new Date().getFullYear()} Threynnare. Todos os direitos reservados.
-            </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            <div className="text-sm text-background/60">
+              <p className="mb-2">© {new Date().getFullYear()} Threynnare. Todos os direitos reservados.</p>
+              <p className="text-background/50">CNPJ: 19.755.920/0001-48</p>
+            </div>
             <div className="flex gap-6 text-sm text-background/60">
               <a href="#" className="hover:text-background transition-colors">Termos de Uso</a>
               <a href="#" className="hover:text-background transition-colors">Política de Privacidade</a>
