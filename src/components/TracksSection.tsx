@@ -31,7 +31,7 @@ const tracks = [
   {
     icon: <Monitor className="w-6 h-6" />,
     title: "Informática e Tecnologia",
-    courses: ["Windows", "Segurança na Internet", "Word", "Excel", "PowerPoint", "Google Drive", "Digitação", "Manutenção de PC"],
+    courses: ["Windows", "Segurança na Internet", "Word", "Excel", "PowerPoint", "Introdução a Internet", "Digitação", "Manutenção de PC"],
     color: "from-cyan-500 to-cyan-600",
   },
   {
