@@ -1,7 +1,7 @@
 import { ArrowRight, Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const logo = "https://cdn.builder.io/api/v1/image/assets%2Fe5bb440d62b9444d8b1b5ce7174c9669%2Fee393151f3d54614831850d1a16b29db?format=webp&width=800";
+const logo = "https://cdn.builder.io/api/v1/image/assets%2Ff4670bbbe2cf4661b102af324234e044%2Fc2b8ad5f20e74cc9bfc3c554409ba0aa?format=webp&width=800";
 
 const Footer = () => {
   const scrollToPlans = () => {
@@ -46,10 +46,10 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <img 
-                src={logo} 
-                alt="Clube de Capacitação Profissional" 
-                className="h-16 w-auto brightness-0 invert"
+              <img
+                src={logo}
+                alt="Clube de Capacitação Profissional"
+                className="h-24 w-auto max-w-3xl"
               />
             </div>
             <p className="text-background/70 mb-6 max-w-md">
