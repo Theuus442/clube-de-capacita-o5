@@ -25,7 +25,7 @@ const tracks = [
   {
     icon: <Sparkles className="w-6 h-6" />,
     title: "Área da Beleza",
-    courses: ["Maquiagem", "Designer de Cílios", "Massagem Modeladora", "Manicure e Pedicure", "Barbeiro", "Instagram para Vendas e Empreendedorismo"],
+    courses: ["Maquiagem", "Designer de Cílios", "Massagem Modeladora", "Manicure e Pedicure", "Barbeiro", "Instagram para Vendas", "Empreendedorismo"],
     color: "from-pink-500 to-pink-600",
   },
   {
