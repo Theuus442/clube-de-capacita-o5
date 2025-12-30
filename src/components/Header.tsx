@@ -20,7 +20,7 @@ const Header = () => {
             <img
               src={logo}
               alt="Clube de Capacitação Profissional"
-              className="h-16 lg:h-24 w-auto max-w-3xl group-hover:scale-105 transition-transform"
+              className="h-20 lg:h-28 w-auto max-w-3xl group-hover:scale-105 transition-transform"
             />
           </a>
 
@@ -51,7 +51,7 @@ const Header = () => {
               className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-primary/5"
               onClick={() => window.location.href = "https://online.threynnare.com.br/metodo/index.php"}
             >
-              Acessar Plataforma do curso
+              Entrar
             </Button>
             <Button
               variant="hero"
