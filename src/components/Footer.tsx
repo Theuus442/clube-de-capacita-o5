@@ -27,13 +27,13 @@ const Footer = () => {
             <p className="text-background/70 text-lg mb-8">
               Aprenda mais, se qualifique e esteja preparado para novas oportunidades.
             </p>
-            <Button 
-              variant="hero" 
+            <Button
+              variant="hero"
               size="xl"
               onClick={scrollToPlans}
               className="group"
             >
-              Entrar para o clube agora
+              Acessar Plataforma do curso agora
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -70,7 +70,7 @@ const Footer = () => {
               <FooterLink href="#o-que-e">O que é o clube</FooterLink>
               <FooterLink href="#trilhas">Trilhas</FooterLink>
               <FooterLink href="#planos">Planos</FooterLink>
-              <FooterLink href="#">Entrar</FooterLink>
+              <FooterLink href="#">Acessar Plataforma do curso</FooterLink>
             </ul>
           </div>
 
