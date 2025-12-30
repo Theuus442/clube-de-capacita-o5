@@ -14,13 +14,13 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-2 lg:py-3">
+        <div className="flex items-center justify-between py-1">
           {/* Logo */}
           <a href="/" className="flex items-center hover:opacity-90 transition-opacity group">
             <img
               src={logo}
               alt="Clube de Capacitação Profissional"
-              className="h-16 lg:h-24 w-auto max-w-3xl group-hover:scale-105 transition-transform"
+              className="h-20 lg:h-28 w-auto max-w-3xl group-hover:scale-105 transition-transform"
             />
           </a>
 
@@ -51,7 +51,7 @@ const Header = () => {
               className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-primary/5"
               onClick={() => window.location.href = "https://online.threynnare.com.br/metodo/index.php"}
             >
-              Acessar Plataforma do curso
+              Entrar
             </Button>
             <Button
               variant="hero"
