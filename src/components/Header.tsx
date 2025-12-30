@@ -51,7 +51,7 @@ const Header = () => {
               className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-primary/5"
               onClick={() => window.location.href = "https://online.threynnare.com.br/metodo/index.php"}
             >
-              Entrar
+              Acessar Plataforma do curso
             </Button>
             <Button
               variant="hero"
