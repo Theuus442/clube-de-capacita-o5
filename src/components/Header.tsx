@@ -22,6 +22,9 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-1">
+            <a href="/" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
+              Inicio
+            </a>
             <a href="#para-quem" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all duration-200">
               Para quem é
             </a>
