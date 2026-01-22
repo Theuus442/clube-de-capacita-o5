@@ -89,6 +89,13 @@ const MercadoPagoCheckout = ({ onPlanSelect }: MercadoPagoCheckoutProps = {}) =>
   });
 
   const handlePlanSelect = async (planId: string) => {
+    // Find the plan and get its Hotmart URL
+    const selectedPlan = plans.find((p) => p.id === planId);
+    if (selectedPlan?.hotmartUrl) {
+      window.open(selectedPlan.hotmartUrl, '_blank');
+      return;
+    }
+
     // If onPlanSelect callback is provided, use it (new flow with registration)
     if (onPlanSelect) {
       onPlanSelect(planId);
