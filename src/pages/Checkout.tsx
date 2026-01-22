@@ -49,7 +49,7 @@ const CheckoutPage = () => {
       {/* Checkout Component */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {currentStep === 'plans' ? (
-          <MercadoPagoCheckout onPlanSelect={handlePlanSelected} />
+          <MercadoPagoCheckout />
         ) : selectedPlan ? (
           <div className="space-y-6">
             <PreCheckoutRegistration

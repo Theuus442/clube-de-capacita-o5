@@ -1,8 +1,18 @@
 import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const plans = [
+const plans: Array<{
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  period: string;
+  features: string[];
+  icon: React.ReactNode;
+  popular: boolean;
+  highlight?: string;
+  hotmartUrl: string;
+}> = [
   {
     id: "mensal",
     name: "Plano Mensal",
@@ -17,6 +27,7 @@ const plans = [
     ],
     icon: <Target className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=t69vflmy",
   },
   {
     id: "anual",
@@ -33,6 +44,7 @@ const plans = [
     ],
     icon: <Crown className="w-6 h-6" />,
     popular: true,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=7y9rxgn1",
   },
   {
     id: "semestral",
@@ -47,15 +59,17 @@ const plans = [
     ],
     icon: <Zap className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=pfpgn8vy",
   },
 ];
 
 const PlansSection = () => {
-  const navigate = useNavigate();
-
-  // Função para redirecionar para o checkout de assinatura
+  // Função para abrir o link da Hotmart do plano selecionado
   const handleSubscribe = (planId: string) => {
-    navigate('/checkout');
+    const plan = plans.find((p) => p.id === planId);
+    if (plan?.hotmartUrl) {
+      window.open(plan.hotmartUrl, '_blank');
+    }
   };
 
   return (

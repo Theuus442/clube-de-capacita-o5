@@ -15,6 +15,7 @@ interface Plan {
   icon: React.ReactNode;
   highlight?: string;
   popular?: boolean;
+  hotmartUrl?: string;
 }
 
 interface CheckoutState {
@@ -44,6 +45,7 @@ const plans: Plan[] = [
     icon: <Crown className="w-6 h-6" />,
     highlight: 'Mais vantajoso',
     popular: true,
+    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=7y9rxgn1',
   },
   {
     id: 'semestral',
@@ -58,6 +60,7 @@ const plans: Plan[] = [
     ],
     icon: <Zap className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=pfpgn8vy',
   },
   {
     id: 'mensal',
@@ -73,6 +76,7 @@ const plans: Plan[] = [
     ],
     icon: <Target className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=t69vflmy',
   },
 ];
 
@@ -85,6 +89,13 @@ const MercadoPagoCheckout = ({ onPlanSelect }: MercadoPagoCheckoutProps = {}) =>
   });
 
   const handlePlanSelect = async (planId: string) => {
+    // Find the plan and get its Hotmart URL
+    const selectedPlan = plans.find((p) => p.id === planId);
+    if (selectedPlan?.hotmartUrl) {
+      window.open(selectedPlan.hotmartUrl, '_blank');
+      return;
+    }
+
     // If onPlanSelect callback is provided, use it (new flow with registration)
     if (onPlanSelect) {
       onPlanSelect(planId);
