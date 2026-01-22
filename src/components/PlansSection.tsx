@@ -64,11 +64,12 @@ const plans: Array<{
 ];
 
 const PlansSection = () => {
-  const navigate = useNavigate();
-
-  // Função para redirecionar para o checkout de assinatura
+  // Função para abrir o link da Hotmart do plano selecionado
   const handleSubscribe = (planId: string) => {
-    navigate('/checkout');
+    const plan = plans.find((p) => p.id === planId);
+    if (plan?.hotmartUrl) {
+      window.open(plan.hotmartUrl, '_blank');
+    }
   };
 
   return (
