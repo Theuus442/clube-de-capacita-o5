@@ -60,7 +60,7 @@ const plans: Plan[] = [
     ],
     icon: <Zap className="w-6 h-6" />,
     popular: false,
-    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=pfpgn8vy',
+    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=vaob7i7e',
   },
   {
     id: 'mensal',
@@ -76,7 +76,7 @@ const plans: Plan[] = [
     ],
     icon: <Target className="w-6 h-6" />,
     popular: false,
-    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=t69vflmy',
+    hotmartUrl: 'https://pay.hotmart.com/R73988787U?off=7duma41j',
   },
 ];
 
