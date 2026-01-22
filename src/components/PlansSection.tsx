@@ -17,6 +17,7 @@ const plans = [
     ],
     icon: <Target className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=t69vflmy",
   },
   {
     id: "anual",
@@ -33,6 +34,7 @@ const plans = [
     ],
     icon: <Crown className="w-6 h-6" />,
     popular: true,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=7y9rxgn1",
   },
   {
     id: "semestral",
@@ -47,6 +49,7 @@ const plans = [
     ],
     icon: <Zap className="w-6 h-6" />,
     popular: false,
+    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=pfpgn8vy",
   },
 ];
 
