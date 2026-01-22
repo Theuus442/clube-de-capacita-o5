@@ -15,6 +15,7 @@ interface Plan {
   icon: React.ReactNode;
   highlight?: string;
   popular?: boolean;
+  hotmartUrl?: string;
 }
 
 interface CheckoutState {
