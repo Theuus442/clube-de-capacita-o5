@@ -1,8 +1,18 @@
 import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const plans = [
+const plans: Array<{
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  period: string;
+  features: string[];
+  icon: React.ReactNode;
+  popular: boolean;
+  highlight?: string;
+  hotmartUrl: string;
+}> = [
   {
     id: "mensal",
     name: "Plano Mensal",
