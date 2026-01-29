@@ -110,12 +110,12 @@ const AdminDashboard = () => {
 
             {/* Trilhas Tab */}
             <TabsContent value="trilhas" className="mt-0">
-              <TracksManager />
+              <TracksManagerIntegrated />
             </TabsContent>
 
             {/* Planos Tab */}
             <TabsContent value="planos" className="mt-0">
-              <PlansManager />
+              <PlansManagerIntegrated />
             </TabsContent>
           </Tabs>
         </Card>
