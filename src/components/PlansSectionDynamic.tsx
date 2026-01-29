@@ -1,76 +1,54 @@
-import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { formatCurrency } from "@/lib/format";
+import { usePlans } from '@/hooks/usePlans';
+import { Button } from '@/components/ui/button';
+import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 
-const plans: Array<{
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  period: string;
-  features: string[];
-  icon: React.ReactNode;
-  popular: boolean;
-  highlight?: string;
-  hotmartUrl: string;
-}> = [
-  {
-    id: "mensal",
-    name: "Plano Mensal",
-    description: "Acesso completo à plataforma por 1 mês",
-    price: "47,90",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Acesso por 1 mês",
-      "Perfeito para começar",
-    ],
-    icon: <Target className="w-6 h-6" />,
-    popular: false,
-    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=7duma41j",
-  },
-  {
-    id: "anual",
-    name: "Plano Anual",
-    highlight: "Mais vantajoso",
-    description: "12 meses de acesso ilimitado à plataforma",
-    price: "397",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Melhor custo-benefício",
-      "Ideal para quem pensa no médio e longo prazo",
-    ],
-    icon: <Crown className="w-6 h-6" />,
-    popular: true,
-    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=7y9rxgn1",
-  },
-  {
-    id: "semestral",
-    name: "Plano Semestral",
-    description: "Acesso completo à plataforma por 6 meses",
-    price: "297",
-    period: "",
-    features: [
-      "Todos os cursos disponíveis",
-      "Certificados inclusos",
-      "Acesso por 6 meses",
-    ],
-    icon: <Zap className="w-6 h-6" />,
-    popular: false,
-    hotmartUrl: "https://pay.hotmart.com/R73988787U?off=vaob7i7e",
-  },
-];
+const PlansSectionDynamic = () => {
+  const { plans, loading, error } = usePlans();
 
-const PlansSection = () => {
-  // Função para abrir o link da Hotmart do plano selecionado
-  const handleSubscribe = (planId: string) => {
-    const plan = plans.find((p) => p.id === planId);
-    if (plan?.hotmartUrl) {
-      window.open(plan.hotmartUrl, '_blank');
+  if (loading) {
+    return (
+      <section id="planos" className="py-24 lg:py-32 relative overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="animate-pulse h-8 w-32 bg-muted rounded mx-auto mb-4"></div>
+            <div className="animate-pulse h-12 w-3/4 bg-muted rounded mx-auto mb-6"></div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="animate-pulse bg-muted rounded-3xl h-96"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="planos" className="py-24 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-destructive">
+            <p>Erro ao carregar planos. Por favor, tente novamente.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const handleSubscribe = (planHotmartUrl: string) => {
+    if (planHotmartUrl) {
+      window.open(planHotmartUrl, '_blank');
     }
+  };
+
+  const getIcon = (iconName: string) => {
+    const Icons: Record<string, JSX.Element> = {
+      'Crown': <Crown className="w-6 h-6" />,
+      'Target': <Target className="w-6 h-6" />,
+      'Zap': <Zap className="w-6 h-6" />,
+    };
+    return Icons[iconName] || <Target className="w-6 h-6" />;
   };
 
   return (
@@ -116,7 +94,7 @@ const PlansSection = () => {
                   ? 'bg-hero-gradient text-primary-foreground shadow-lg' 
                   : 'bg-muted text-foreground'
               }`}>
-                {plan.icon}
+                {getIcon(plan.icon)}
               </div>
 
               {/* Plan Name */}
@@ -125,24 +103,23 @@ const PlansSection = () => {
 
               {/* Pricing */}
               <div className="mb-8">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-sm text-muted-foreground">R$</span>
-                  <span className={`font-display text-5xl font-bold ${plan.popular ? 'text-gradient' : 'text-foreground'}`}>
-                    {plan.price}
+                <div className="flex items-baseline gap-2">
+                  <span className={`font-display text-4xl font-bold ${plan.popular ? 'text-gradient' : 'text-foreground'}`}>
+                    {formatCurrency(plan.price)}
                   </span>
                 </div>
               </div>
 
               {/* Features */}
               <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, index) => (
+                {plan.features && plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
                       plan.popular ? 'bg-primary/10' : 'bg-muted'
                     }`}>
                       <Check className={`w-3 h-3 ${plan.popular ? 'text-primary' : 'text-foreground'}`} />
                     </div>
-                    <span className="text-foreground text-sm">{feature}</span>
+                    <span className="text-foreground text-sm">{feature.feature}</span>
                   </li>
                 ))}
               </ul>
@@ -152,7 +129,7 @@ const PlansSection = () => {
                 variant={plan.popular ? "hero" : "outline"} 
                 size="lg" 
                 className="w-full"
-                onClick={() => handleSubscribe(plan.id)}
+                onClick={() => handleSubscribe(plan.hotmart_url)}
               >
                 {plan.popular ? "Assinar agora" : "Começar agora"}
               </Button>
@@ -179,4 +156,4 @@ const TrustBadge = ({ icon, text }: { icon: React.ReactNode; text: string }) => 
   </div>
 );
 
-export default PlansSection;
+export default PlansSectionDynamic;
