@@ -1,5 +1,5 @@
 import { useTracks } from '@/hooks/useTracks';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Rocket, Briefcase, Sparkles, Monitor, GraduationCap, Share2, BookOpen } from 'lucide-react';
 
 const TracksSectionDynamic = () => {
   const { tracks, loading, error } = useTracks();
@@ -36,16 +36,15 @@ const TracksSectionDynamic = () => {
 
   // Get icon component based on icon name
   const getIcon = (iconName: string) => {
-    // Import icons dynamically
     const Icons: Record<string, JSX.Element> = {
-      'Rocket': <div className="w-6 h-6">🚀</div>,
-      'Briefcase': <div className="w-6 h-6">💼</div>,
-      'Sparkles': <div className="w-6 h-6">✨</div>,
-      'Monitor': <div className="w-6 h-6">🖥️</div>,
-      'GraduationCap': <div className="w-6 h-6">🎓</div>,
-      'Share2': <div className="w-6 h-6">🔗</div>,
+      'Rocket': <Rocket className="w-6 h-6" />,
+      'Briefcase': <Briefcase className="w-6 h-6" />,
+      'Sparkles': <Sparkles className="w-6 h-6" />,
+      'Monitor': <Monitor className="w-6 h-6" />,
+      'GraduationCap': <GraduationCap className="w-6 h-6" />,
+      'Share2': <Share2 className="w-6 h-6" />,
     };
-    return Icons[iconName] || <div className="w-6 h-6">📚</div>;
+    return Icons[iconName] || <BookOpen className="w-6 h-6" />;
   };
 
   return (
