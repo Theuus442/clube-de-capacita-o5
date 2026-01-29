@@ -1,6 +1,7 @@
 import { usePlans } from '@/hooks/usePlans';
 import { Button } from '@/components/ui/button';
 import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 
 const PlansSectionDynamic = () => {
   const { plans, loading, error } = usePlans();
