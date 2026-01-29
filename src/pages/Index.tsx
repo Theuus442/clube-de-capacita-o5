@@ -3,9 +3,9 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import WhatIsSection from "@/components/WhatIsSection";
-import TracksSection from "@/components/TracksSection";
+import TracksSectionDynamic from "@/components/TracksSectionDynamic";
 import ComparisonSection from "@/components/ComparisonSection";
-import PlansSection from "@/components/PlansSection";
+import PlansSectionDynamic from "@/components/PlansSectionDynamic";
 import Footer from "@/components/Footer";
 
 const Index = () => {
