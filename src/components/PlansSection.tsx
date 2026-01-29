@@ -1,5 +1,6 @@
 import { Check, Star, ShieldCheck, CreditCard, Target, Zap, Crown, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/format";
 
 const plans: Array<{
   id: string;
