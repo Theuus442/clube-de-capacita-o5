@@ -1,5 +1,5 @@
 import { useTracks } from '@/hooks/useTracks';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Rocket, Briefcase, Sparkles, Monitor, GraduationCap, Share2, BookOpen } from 'lucide-react';
 
 const TracksSectionDynamic = () => {
   const { tracks, loading, error } = useTracks();
