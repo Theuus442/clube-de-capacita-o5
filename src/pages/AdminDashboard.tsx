@@ -5,8 +5,8 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { LogOut, BookOpen, CreditCard, BarChart3 } from 'lucide-react';
-import TracksManager from '@/components/admin/TracksManager';
-import PlansManager from '@/components/admin/PlansManager';
+import TracksManagerIntegrated from '@/components/admin/TracksManagerIntegrated';
+import PlansManagerIntegrated from '@/components/admin/PlansManagerIntegrated';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
