@@ -103,10 +103,9 @@ const PlansSectionDynamic = () => {
 
               {/* Pricing */}
               <div className="mb-8">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-sm text-muted-foreground">R$</span>
-                  <span className={`font-display text-5xl font-bold ${plan.popular ? 'text-gradient' : 'text-foreground'}`}>
-                    {plan.price}
+                <div className="flex items-baseline gap-2">
+                  <span className={`font-display text-4xl font-bold ${plan.popular ? 'text-gradient' : 'text-foreground'}`}>
+                    {formatCurrency(plan.price)}
                   </span>
                 </div>
               </div>
